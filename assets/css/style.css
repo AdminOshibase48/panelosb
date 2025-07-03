@@ -1,38 +1,37 @@
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background: #f0f8ff;
-  color: #333;
-  padding: 2rem;
+  background: #f0f4f8;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
   margin: 0;
 }
 
-.login-container, .dashboard {
-  max-width: 400px;
-  margin: auto;
-  padding: 2rem;
+.login-box {
   background: white;
+  padding: 30px;
+  border-radius: 12px;
+  width: 300px;
   box-shadow: 0 0 15px rgba(0,0,0,0.1);
-  border-radius: 10px;
+  text-align: center;
 }
 
-input {
+.login-box input {
+  display: block;
   width: 100%;
-  padding: 0.6rem;
-  margin-bottom: 1rem;
+  margin-bottom: 15px;
+  padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 6px;
 }
 
-button {
-  width: 100%;
-  padding: 0.7rem;
-  background-color: #0077ff;
+.login-box button {
+  background: #1e3a8a;
   color: white;
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #005fcc;
+  padding: 10px;
+  width: 100%;
+  border-radius: 6px;
+  font-weight: bold;
 }
