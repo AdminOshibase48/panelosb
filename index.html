@@ -1,10 +1,36 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Oshibase48 Admin Panel</title>
-  </head>
-  <body>
-    <h1>Selamat datang di Admin Panel!</h1>
-    <p><a href="login.html">Login ke dashboard</a></p>
-  </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login Admin OSHIBASE48</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="assets/js/supabase.js"></script>
+</head>
+<body>
+  <div class="login-box">
+    <h2>Login Admin</h2>
+    <input type="email" id="email" placeholder="Email Admin" />
+    <input type="password" id="password" placeholder="Password" />
+    <button onclick="login()">Login</button>
+  </div>
+
+  <script>
+    async function login() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email, password
+      });
+
+      if (error) {
+        alert("Gagal Login: " + error.message);
+      } else {
+        window.location.href = "dashboard/dashboard.html";
+      }
+    }
+  </script>
+</body>
 </html>
