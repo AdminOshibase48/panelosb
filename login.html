@@ -1,31 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Login Admin</title>
+  <title>Login</title>
+  <!-- LOAD SUPABASE SDK DULU -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <!-- LALU BARU supabase.js -->
+  <script src="supabase.js"></script>
 </head>
 <body>
-  <div class="login-container">
-    <h2>Login Admin</h2>
-    <input type="email" id="email" placeholder="Email" />
-    <input type="password" id="password" placeholder="Password" />
-    <button onclick="login()">Login</button>
-  </div>
+  <h2>Login Panel</h2>
+  <input type="email" id="email" placeholder="Email"><br>
+  <input type="password" id="password" placeholder="Password"><br>
+  <button onclick="login()">Login</button>
 
-  <script src="supabase.js"></script>
   <script>
     async function login() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
 
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabaseClient.auth.signInWithPassword({
         email,
         password
       });
 
       if (error) {
-        alert('Login gagal: ' + error.message);
+        alert("Login Gagal: " + error.message);
       } else {
         window.location.href = "dashboard.html";
       }
