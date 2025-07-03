@@ -2,91 +2,81 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login Admin - OSHIBASE48</title>
-  <link rel="stylesheet" href="assets/css/style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script>
-    const supabase = supabase.createClient(
-      'https://nuvfnnxuxtthbryesliu.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51dmZubnh1eHR0aGJyeWVzbGl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1Mzk1NTYsImV4cCI6MjA2NzExNTU1Nn0.Om73FRiKvdlWpZS-hIXCIKznjkQ3A3X3k1n2IzGzRes'
-    );
-  </script>
+  <title>Login Panel Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- ✅ Tambahkan CDN Supabase di awal -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Style UI -->
   <style>
     body {
-      background: #f1f5ff;
       font-family: 'Segoe UI', sans-serif;
-      margin: 0;
+      background: #f0f6ff;
       display: flex;
       align-items: center;
       justify-content: center;
       height: 100vh;
+      margin: 0;
     }
-
-    .login-container {
+    .login-box {
       background: white;
-      padding: 40px;
+      padding: 30px 40px;
       border-radius: 10px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      width: 100%;
-      max-width: 400px;
-      text-align: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-
-    h2 {
-      color: #1e3a8a;
-      margin-bottom: 20px;
-    }
-
     input {
+      display: block;
+      margin-bottom: 15px;
+      padding: 10px;
       width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 6px;
+      border-radius: 5px;
       border: 1px solid #ccc;
     }
-
     button {
-      background: #1e40af;
+      background: #1877f2;
       color: white;
       border: none;
-      padding: 12px 20px;
-      border-radius: 6px;
+      padding: 10px 15px;
+      border-radius: 5px;
       cursor: pointer;
-      font-weight: bold;
-      width: 100%;
     }
-
     button:hover {
-      background: #1e3a8a;
-    }
-
-    .error {
-      color: red;
-      font-size: 14px;
+      background: #125ed6;
     }
   </style>
 </head>
+
 <body>
-  <div class="login-container">
-    <h2>Login Admin OSHIBASE48</h2>
-    <input type="email" id="email" placeholder="Email Admin" required />
-    <input type="password" id="password" placeholder="Password" required />
+  <div class="login-box">
+    <h2>Login to Admin Panel</h2>
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Password" />
     <button onclick="login()">Login</button>
-    <p id="errorMsg" class="error"></p>
   </div>
 
   <script>
+    // ✅ Buat Supabase Client
+    const supabaseUrl = "https://nuvfnnxuxtthbryesliu.supabase.co";
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51dmZubnh1eHR0aGJyeWVzbGl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1Mzk1NTYsImV4cCI6MjA2NzExNTU1Nn0.Om73FRiKvdlWpZS-hIXCIKznjkQ3A3X3k1n2IzGzRes";
+
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+    // ✅ Fungsi Login
     async function login() {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
 
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
       if (error) {
-        document.getElementById("errorMsg").textContent = error.message;
+        alert("Login gagal: " + error.message);
       } else {
-        window.location.href = "dashboard/dashboard.html";
+        // Arahkan ke dashboard
+        window.location.href = "/dashboard.html";
       }
     }
   </script>
