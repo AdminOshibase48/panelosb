@@ -2,80 +2,81 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Login Panel Admin</title>
+  <title>Login to Admin Panel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <!-- ✅ Tambahkan CDN Supabase di awal -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <!-- Style UI -->
+  <!-- ✅ Load Supabase CDN DULU -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.5/dist/umd/supabase.min.js"></script>
+
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: #f0f6ff;
+      background-color: #f5faff;
       display: flex;
       align-items: center;
       justify-content: center;
       height: 100vh;
       margin: 0;
     }
-    .login-box {
-      background: white;
-      padding: 30px 40px;
+    .login-container {
+      background-color: white;
+      padding: 40px;
       border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      width: 350px;
     }
     input {
-      display: block;
-      margin-bottom: 15px;
-      padding: 10px;
       width: 100%;
-      border-radius: 5px;
+      padding: 12px;
+      margin-bottom: 15px;
       border: 1px solid #ccc;
+      border-radius: 6px;
     }
     button {
-      background: #1877f2;
+      width: 100%;
+      padding: 12px;
+      background-color: #1877f2;
       color: white;
       border: none;
-      padding: 10px 15px;
-      border-radius: 5px;
+      border-radius: 6px;
       cursor: pointer;
+      font-weight: bold;
     }
     button:hover {
-      background: #125ed6;
+      background-color: #125ed6;
     }
   </style>
 </head>
 
 <body>
-  <div class="login-box">
-    <h2>Login to Admin Panel</h2>
+  <div class="login-container">
+    <h2>Login</h2>
     <input type="email" id="email" placeholder="Email" />
     <input type="password" id="password" placeholder="Password" />
     <button onclick="login()">Login</button>
   </div>
 
+  <!-- ✅ Supabase Config dan Client -->
   <script>
-    // ✅ Buat Supabase Client
     const supabaseUrl = "https://nuvfnnxuxtthbryesliu.supabase.co";
     const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51dmZubnh1eHR0aGJyeWVzbGl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1Mzk1NTYsImV4cCI6MjA2NzExNTU1Nn0.Om73FRiKvdlWpZS-hIXCIKznjkQ3A3X3k1n2IzGzRes";
 
-    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+    // ✅ Buat Supabase Client setelah CDN
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-    // ✅ Fungsi Login
     async function login() {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
 
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
-        password,
+        password
       });
 
       if (error) {
-        alert("Login gagal: " + error.message);
+        alert("Login Gagal: " + error.message);
       } else {
-        // Arahkan ke dashboard
+        // ✅ Redirect jika berhasil login
         window.location.href = "/dashboard.html";
       }
     }
