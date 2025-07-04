@@ -3,100 +3,160 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Kelola Galeri - OSHIBASE48</title>
+  <title>Galeri Komunitas - OSHIBASE48</title>
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
   <style>
     body {
-      background-color: #f5f9ff;
       font-family: 'Segoe UI', sans-serif;
       margin: 0;
-      padding: 20px;
+      background-color: #f5f9ff;
     }
 
-    .container {
-      max-width: 800px;
-      margin: auto;
-      background: white;
-      border-radius: 12px;
+    header {
+      background-color: #1e3a8a;
+      color: white;
       padding: 20px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    }
-
-    h1 {
-      color: #1e3a8a;
       text-align: center;
     }
 
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
     }
 
-    input[type="text"],
-    textarea,
-    input[type="file"] {
+    .form-upload {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+
+    input, textarea {
+      display: block;
       width: 100%;
+      margin-bottom: 12px;
       padding: 10px;
-      border-radius: 6px;
       border: 1px solid #ccc;
-      margin-top: 5px;
+      border-radius: 6px;
     }
 
     button {
-      margin-top: 20px;
+      padding: 10px 20px;
       background-color: #1e40af;
       color: white;
-      padding: 10px 16px;
       border: none;
       border-radius: 6px;
       cursor: pointer;
       font-weight: bold;
     }
 
-    .gallery-item {
-      border-top: 1px solid #eee;
-      padding-top: 20px;
-      margin-top: 20px;
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
     }
 
-    .gallery-item img {
-      max-width: 100%;
+    .gallery-card {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      position: relative;
+    }
+
+    .gallery-card img {
+      width: 100%;
       border-radius: 6px;
-      margin-bottom: 10px;
     }
 
     .delete-btn {
-      background-color: #e11d48;
-      margin-top: 10px;
-      border: none;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #e11d48;
       color: white;
-      padding: 8px 12px;
+      border: none;
+      padding: 6px 10px;
       border-radius: 4px;
       cursor: pointer;
+      font-size: 0.8rem;
     }
   </style>
-  <script type="module" src="../assets/js/upload-galeri.js" defer></script>
 </head>
 <body>
+  <header>
+    <h1>Galeri Komunitas OSHIBASE48</h1>
+  </header>
+
   <div class="container">
-    <h1>Galeri Komunitas</h1>
+    <div class="form-upload" data-aos="fade-down">
+      <h2>Upload Foto Galeri</h2>
+      <input type="text" id="title" placeholder="Judul Foto" />
+      <input type="file" id="image" accept="image/*" />
+      <button onclick="uploadFoto()">Upload</button>
+    </div>
 
-    <!-- Upload Form -->
-    <form id="galeriForm">
-      <label for="title">Judul</label>
-      <input type="text" id="title" placeholder="Judul Galeri" required />
-
-      <label for="description">Deskripsi</label>
-      <textarea id="description" rows="3" placeholder="Deskripsi kegiatan..." required></textarea>
-
-      <label for="image">Gambar</label>
-      <input type="file" id="image" accept="image/*" required />
-
-      <button type="submit">Upload Galeri</button>
-    </form>
-
-    <!-- Daftar Galeri -->
-    <div id="galeriList"></div>
+    <div class="gallery-grid" id="gallery" data-aos="fade-up">
+      <!-- Galeri akan ditampilkan di sini -->
+    </div>
   </div>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+    const supabase = createClient('https://[PROJECT-ID].supabase.co', 'public-anon-key');
+
+    async function fetchGaleri() {
+      const { data, error } = await supabase.from('galeri').select('*').order('created_at', { ascending: false });
+      const galleryDiv = document.getElementById('gallery');
+      galleryDiv.innerHTML = '';
+
+      data.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'gallery-card';
+        card.innerHTML = `
+          <button class="delete-btn" onclick="hapusFoto(${item.id})">Hapus</button>
+          <img src="${item.image_url}" alt="${item.title}" />
+          <p><strong>${item.title}</strong></p>
+        `;
+        galleryDiv.appendChild(card);
+      });
+    }
+
+    window.hapusFoto = async function(id) {
+      const confirmDelete = confirm("Yakin ingin menghapus foto ini?");
+      if (!confirmDelete) return;
+
+      await supabase.from('galeri').delete().eq('id', id);
+      fetchGaleri();
+    }
+
+    window.uploadFoto = async function() {
+      const title = document.getElementById('title').value;
+      const file = document.getElementById('image').files[0];
+
+      if (!title || !file) return alert("Isi judul dan pilih gambar!");
+
+      const fileName = `${Date.now()}_${file.name}`;
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('galeri')
+        .upload(fileName, file);
+
+      if (uploadError) return alert("Gagal upload gambar");
+
+      const { data: publicURL } = supabase.storage.from('galeri').getPublicUrl(fileName);
+      await supabase.from('galeri').insert([{ title, image_url: publicURL.publicUrl }]);
+      document.getElementById('title').value = '';
+      document.getElementById('image').value = '';
+      fetchGaleri();
+    }
+
+    fetchGaleri();
+  </script>
+
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>AOS.init();</script>
 </body>
 </html>
