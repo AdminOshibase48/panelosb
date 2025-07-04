@@ -99,17 +99,66 @@
     </div>
 
     <div class="gallery-grid" id="gallery" data-aos="fade-up">
-      <!-- Galeri akan ditampilkan di sini -->
+      <!-- Galeri akan dimuat di sini -->
     </div>
   </div>
 
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-    const supabase = createClient('https://[PROJECT-ID].supabase.co', 'public-anon-key');
+    const supabase = createClient('https://YOUR-PROJECT.supabase.co', 'YOUR-ANON-KEY');
 
+    // Fungsi untuk upload foto
+    window.uploadFoto = async function () {
+      const title = document.getElementById('title').value;
+      const file = document.getElementById('image').files[0];
+
+      if (!title || !file) {
+        alert("Isi judul dan pilih gambar!");
+        return;
+      }
+
+      const fileName = `${Date.now()}_${file.name}`;
+
+      // Upload ke bucket 'galeri'
+      const { data: uploaded, error: uploadError } = await supabase.storage
+        .from('galeri')
+        .upload(fileName, file);
+
+      if (uploadError) {
+        console.error(uploadError);
+        alert("Gagal upload gambar: " + uploadError.message);
+        return;
+      }
+
+      const { data: publicURL } = supabase.storage
+        .from('galeri')
+        .getPublicUrl(fileName);
+
+      // Insert ke database galeri
+      const { error: insertError } = await supabase
+        .from('galeri')
+        .insert([{ title, image_url: publicURL.publicUrl }]);
+
+      if (insertError) {
+        console.error(insertError);
+        alert("Gagal simpan ke database: " + insertError.message);
+        return;
+      }
+
+      alert("Berhasil upload!");
+      document.getElementById('title').value = '';
+      document.getElementById('image').value = '';
+      fetchGaleri();
+    }
+
+    // Tampilkan galeri
     async function fetchGaleri() {
-      const { data, error } = await supabase.from('galeri').select('*').order('created_at', { ascending: false });
+      const { data, error } = await supabase
+        .from('galeri')
+        .select('*')
+        .order('created_at', { ascending: false });
+
       const galleryDiv = document.getElementById('gallery');
       galleryDiv.innerHTML = '';
 
@@ -125,31 +174,12 @@
       });
     }
 
-    window.hapusFoto = async function(id) {
+    // Hapus foto
+    window.hapusFoto = async function (id) {
       const confirmDelete = confirm("Yakin ingin menghapus foto ini?");
       if (!confirmDelete) return;
 
       await supabase.from('galeri').delete().eq('id', id);
-      fetchGaleri();
-    }
-
-    window.uploadFoto = async function() {
-      const title = document.getElementById('title').value;
-      const file = document.getElementById('image').files[0];
-
-      if (!title || !file) return alert("Isi judul dan pilih gambar!");
-
-      const fileName = `${Date.now()}_${file.name}`;
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('galeri')
-        .upload(fileName, file);
-
-      if (uploadError) return alert("Gagal upload gambar");
-
-      const { data: publicURL } = supabase.storage.from('galeri').getPublicUrl(fileName);
-      await supabase.from('galeri').insert([{ title, image_url: publicURL.publicUrl }]);
-      document.getElementById('title').value = '';
-      document.getElementById('image').value = '';
       fetchGaleri();
     }
 
