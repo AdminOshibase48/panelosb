@@ -3,36 +3,45 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard - Admin OSHIBASE48</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script type="module" src="js/supabaseClient.js" defer></script>
+  <title>Dashboard Admin - OSHIBASE48</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
 </head>
 <body>
   <header>
-    <img src="assets/logo.png" alt="Oshibase48" class="logo-small"/>
     <h1>Admin Panel - OSHIBASE48</h1>
     <button class="logout-btn" onclick="logout()">Logout</button>
-    <div id="notif" class="notif"></div>
   </header>
 
-  <main>
-    <div class="card" data-aos="zoom-in"><h2>📸 Galeri</h2><a href="galeri.html">Kelola Galeri</a></div>
-    <div class="card" data-aos="zoom-in"><h2>📰 Berita</h2><a href="berita.html">Kelola Berita</a></div>
-    <div class="card" data-aos="zoom-in"><h2>📅 Jadwal</h2><a href="jadwal.html">Kelola Jadwal</a></div>
-  </main>
+  <div class="container">
+    <div class="dashboard-card" data-aos="fade-up">
+      <h2>📸 Galeri Komunitas</h2>
+      <p>Kelola foto-foto kegiatan komunitas terbaru</p>
+      <a href="upload-galeri.html" class="button">Kelola Galeri</a>
+    </div>
 
+    <div class="dashboard-card" data-aos="fade-up" data-aos-delay="100">
+      <h2>📰 Berita Terbaru</h2>
+      <p>Tambah atau ubah berita dan informasi komunitas</p>
+      <a href="upload-berita.html" class="button">Kelola Berita</a>
+    </div>
+
+    <div class="dashboard-card" data-aos="fade-up" data-aos-delay="200">
+      <h2>📅 Jadwal JKT48</h2>
+      <p>Update jadwal kegiatan JKT48 dan event komunitas</p>
+      <a href="upload-jadwal.html" class="button">Kelola Jadwal</a>
+    </div>
+  </div>
+
+  <script type="module" src="../assets/js/supabaseClient.js"></script>
   <script>
-    async function logout() {
-      await supabase.auth.signOut();
-      const notif = document.getElementById('notif');
-      notif.innerText = 'Berhasil logout!';
-      notif.className = 'notif success';
-      setTimeout(() => window.location.href = 'index.html', 1000);
-    }
-
     AOS.init();
+
+    async function logout() {
+      const { error } = await supabase.auth.signOut();
+      if (!error) window.location.href = "../index.html";
+    }
   </script>
 </body>
 </html>
