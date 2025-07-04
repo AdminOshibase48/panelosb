@@ -1,1 +1,3 @@
-<script type="module" src="../assets/js/galeri.js" defer></script>
+window.uploadFoto = async function () {
+  // ...isi fungsi upload yang sudah kita bahas sebelumnya
+}
