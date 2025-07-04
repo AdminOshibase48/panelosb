@@ -1,116 +1,33 @@
-<script type="module">
-  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Galeri Komunitas - OSHIBASE48</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script type="module" src="../assets/js/galeri.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>Galeri Komunitas OSHIBASE48</h1>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </header>
 
-  // ✅ GANTI dengan milik kamu sendiri
-  const supabase = createClient(
-    'https://nuvfnnxuxtthbryesliu.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51dmZubnh1eHR0aGJyeWVzbGl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1Mzk1NTYsImV4cCI6MjA2NzExNTU1Nn0.Om73FRiKvdlWpZS-hIXCIKznjkQ3A3X3k1n2IzGzRes'
-  );
+  <div class="container">
+    <!-- Form Upload -->
+    <form onsubmit="event.preventDefault(); uploadFoto();">
+      <input type="text" id="title" placeholder="Judul Gambar" required />
+      <input type="file" id="image" accept="image/*" required />
+      <button type="submit">Upload</button>
+    </form>
 
-  // 🔒 Cek apakah sudah login
-  async function checkAuth() {
-    const { data: sessionData } = await supabase.auth.getSession();
-    if (!sessionData.session) {
-      alert('Silakan login terlebih dahulu!');
-      window.location.href = '/admin/index.html'; // arahkan ke halaman login
-    }
-  }
+    <hr>
 
-  // ✅ Upload Foto Galeri
-  window.uploadFoto = async function () {
-    const title = document.getElementById('title').value;
-    const file = document.getElementById('image').files[0];
+    <!-- Grid Galeri -->
+    <div id="gallery" class="gallery-grid">
+      <!-- Isi galeri akan dimuat otomatis lewat JS -->
+    </div>
+  </div>
 
-    if (!title || !file) {
-      alert("Isi judul dan pilih gambar!");
-      return;
-    }
-
-    const fileName = `${Date.now()}_${file.name}`;
-
-    // 1. Upload gambar ke Storage
-    const { data: uploaded, error: uploadError } = await supabase.storage
-      .from('galeri')
-      .upload(fileName, file);
-
-    if (uploadError) {
-      console.error(uploadError);
-      alert("Gagal upload gambar: " + uploadError.message);
-      return;
-    }
-
-    // 2. Ambil public URL gambar
-    const { data: publicURL } = supabase.storage
-      .from('galeri')
-      .getPublicUrl(fileName);
-
-    // 3. Simpan metadata ke database
-    const { error: insertError } = await supabase
-      .from('galeri')
-      .insert([{ title, image_url: publicURL.publicUrl }]);
-
-    if (insertError) {
-      console.error(insertError);
-      alert("Gagal simpan ke database: " + insertError.message);
-      return;
-    }
-
-    alert("Berhasil upload!");
-    document.getElementById('title').value = '';
-    document.getElementById('image').value = '';
-    fetchGaleri(); // Refresh galeri
-  }
-
-  // ✅ Tampilkan semua galeri
-  async function fetchGaleri() {
-    const { data, error } = await supabase
-      .from('galeri')
-      .select('*')
-      .order('created_at', { ascending: false });
-
-    const galleryDiv = document.getElementById('gallery');
-    galleryDiv.innerHTML = '';
-
-    if (error) {
-      console.error('Gagal fetch galeri:', error.message);
-      galleryDiv.innerHTML = '<p>Gagal menampilkan galeri.</p>';
-      return;
-    }
-
-    if (data.length === 0) {
-      galleryDiv.innerHTML = '<p>Tidak ada gambar galeri.</p>';
-      return;
-    }
-
-    data.forEach(item => {
-      const card = document.createElement('div');
-      card.className = 'gallery-card';
-      card.innerHTML = `
-        <button class="delete-btn" onclick="hapusFoto(${item.id})">Hapus</button>
-        <img src="${item.image_url}" alt="${item.title}" />
-        <p><strong>${item.title}</strong></p>
-      `;
-      galleryDiv.appendChild(card);
-    });
-  }
-
-  // ✅ Hapus foto
-  window.hapusFoto = async function (id) {
-    const confirmDelete = confirm("Yakin ingin menghapus foto ini?");
-    if (!confirmDelete) return;
-
-    const { error } = await supabase
-      .from('galeri')
-      .delete()
-      .eq('id', id);
-
-    if (error) {
-      alert("Gagal menghapus gambar: " + error.message);
-    } else {
-      fetchGaleri();
-    }
-  }
-
-  await checkAuth(); // cek login dulu
-  await fetchGaleri(); // lalu tampilkan galeri
-</script>
+  <div id="toast" class="toast"></div>
+</body>
+</html>
