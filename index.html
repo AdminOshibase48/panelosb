@@ -39,7 +39,9 @@
       if (error) {
         alert("Gagal Login: " + error.message);
       } else {
-        window.location.href = "dashboard.html";
+        localStorage.setItem('justLoggedIn', 'true');
+window.location.href = "dashboard.html";
+
       }
     }
   </script>
