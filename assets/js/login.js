@@ -12,7 +12,7 @@ document.getElementById('loginBtn')?.addEventListener('click', async () => {
   if (error) {
     alert('Login gagal: ' + error.message)
   } else {
-    alert('Login berhasil!')
+    alert('Login berhasil')
     window.location.href = 'dashboard.html'
   }
 })
