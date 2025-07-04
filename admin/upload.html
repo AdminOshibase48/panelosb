@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Upload Konten</title>
+  <script type="module" src="/js/upload.js" defer></script>
+</head>
+<body>
+  <h1>Upload Konten Komunitas</h1>
+
+  <form id="uploadForm">
+    <label>
+      Tipe Konten:
+      <select id="type" required>
+        <option value="galeri">Galeri</option>
+        <option value="berita">Berita</option>
+        <option value="jadwal">Jadwal</option>
+      </select>
+    </label><br>
+
+    <label>Judul / Nama Kegiatan:
+      <input type="text" id="title" required>
+    </label><br>
+
+    <label>Deskripsi:
+      <textarea id="description" required></textarea>
+    </label><br>
+
+    <label>Gambar (Opsional):
+      <input type="file" id="image" accept="image/*">
+    </label><br>
+
+    <button type="submit">Upload</button>
+  </form>
+</body>
+</html>
