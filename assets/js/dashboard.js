@@ -6,6 +6,6 @@ document.getElementById('logoutBtn')?.addEventListener('click', async () => {
     alert('Logout gagal: ' + error.message)
   } else {
     alert('Logout berhasil')
-    window.location.href = 'https://oshibase48.netlify.app' // ⬅ arahkan ke website utama
+    window.location.href = 'https://panelosb.netlify.app/' // ⬅ arahkan ke website utama
   }
 })
