@@ -1,103 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard Admin - OSHIBASE48</title>
-  <link rel="stylesheet" href="../assets/css/style.css" />
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f5f9ff;
-    }
-
-    header {
-      background-color: #1e3a8a;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
-
-    .container {
-      padding: 30px;
-    }
-
-    .dashboard-card {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.05);
-      margin-bottom: 20px;
-      transition: 0.3s;
-    }
-
-    .dashboard-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    }
-
-    .dashboard-card h2 {
-      margin: 0 0 10px;
-      color: #1e3a8a;
-    }
-
-    a.button {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 10px 20px;
-      background-color: #1e40af;
-      color: white;
-      text-decoration: none;
-      border-radius: 6px;
-    }
-
-    .logout-btn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background-color: #e11d48;
-      color: white;
-      padding: 8px 14px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    @media (max-width: 600px) {
-      .container {
-        padding: 15px;
-      }
-    }
-  </style>
-
-  <!-- Gunakan JS module -->
-  <script type="module" src="../assets/js/dashboard.js" defer></script>
+  <title>Dashboard - Admin OSHIBASE48</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script type="module" src="js/supabaseClient.js" defer></script>
 </head>
 <body>
   <header>
+    <img src="assets/logo.png" alt="Oshibase48" class="logo-small"/>
     <h1>Admin Panel - OSHIBASE48</h1>
-    <button class="logout-btn" id="logoutBtn">Logout</button>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+    <div id="notif" class="notif"></div>
   </header>
 
-  <div class="container">
-    <div class="dashboard-card">
-      <h2>📸 Galeri Komunitas</h2>
-      <p>Kelola foto-foto kegiatan komunitas terbaru</p>
-      <a href="upload-galeri.html" class="button">Kelola Galeri</a>
-    </div>
+  <main>
+    <div class="card" data-aos="zoom-in"><h2>📸 Galeri</h2><a href="galeri.html">Kelola Galeri</a></div>
+    <div class="card" data-aos="zoom-in"><h2>📰 Berita</h2><a href="berita.html">Kelola Berita</a></div>
+    <div class="card" data-aos="zoom-in"><h2>📅 Jadwal</h2><a href="jadwal.html">Kelola Jadwal</a></div>
+  </main>
 
-    <div class="dashboard-card">
-      <h2>📰 Berita Terbaru</h2>
-      <p>Tambah atau ubah berita dan informasi komunitas</p>
-      <a href="upload-berita.html" class="button">Kelola Berita</a>
-    </div>
+  <script>
+    async function logout() {
+      await supabase.auth.signOut();
+      const notif = document.getElementById('notif');
+      notif.innerText = 'Berhasil logout!';
+      notif.className = 'notif success';
+      setTimeout(() => window.location.href = 'index.html', 1000);
+    }
 
-    <div class="dashboard-card">
-      <h2>📅 Jadwal JKT48</h2>
-      <p>Update jadwal kegiatan JKT48 dan event komunitas</p>
-      <a href="upload-jadwal.html" class="button">Kelola Jadwal</a>
-    </div>
-  </div>
+    AOS.init();
+  </script>
 </body>
 </html>
