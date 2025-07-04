@@ -4,22 +4,52 @@
   <meta charset="UTF-8">
   <title>Galeri Komunitas - OSHIBASE48</title>
   <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
   <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f9ff;
+    }
+
     .container {
       max-width: 800px;
       margin: auto;
       padding: 20px;
     }
 
+    h1 {
+      text-align: center;
+      color: #1e3a8a;
+    }
+
     form {
       margin-bottom: 30px;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.04);
     }
 
     input, button {
-      padding: 10px;
-      margin: 5px 0;
+      padding: 12px;
+      margin: 10px 0;
       width: 100%;
       box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
+      background-color: #1d4ed8;
+      color: white;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #2563eb;
     }
 
     .gallery-grid {
@@ -35,11 +65,23 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
       position: relative;
       text-align: center;
+      transition: transform 0.3s;
+    }
+
+    .gallery-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
 
     .gallery-card img {
       width: 100%;
       border-radius: 6px;
+    }
+
+    .gallery-card p {
+      font-weight: 600;
+      margin-top: 10px;
+      color: #1e3a8a;
     }
 
     .delete-btn {
@@ -65,6 +107,27 @@
       padding: 8px 14px;
       border-radius: 6px;
       cursor: pointer;
+      z-index: 999;
+    }
+
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #16a34a;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: all 0.4s ease;
+      z-index: 1000;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
     }
   </style>
 </head>
@@ -73,6 +136,9 @@
 
   <div class="container">
     <h1>Galeri Komunitas OSHIBASE48</h1>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">Upload berhasil!</div>
 
     <!-- Form Upload -->
     <form id="uploadForm">
@@ -85,11 +151,13 @@
     <div id="gallery" class="gallery-grid"></div>
   </div>
 
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>AOS.init();</script>
+
   <!-- Supabase + Script -->
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-    // ✅ GANTI dengan project kamu
     const supabase = createClient(
       'https://nuvfnnxuxtthbryesliu.supabase.co',
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51dmZubnh1eHR0aGJyeWVzbGl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1Mzk1NTYsImV4cCI6MjA2NzExNTU1Nn0.Om73FRiKvdlWpZS-hIXCIKznjkQ3A3X3k1n2IzGzRes'
@@ -97,6 +165,7 @@
 
     const form = document.getElementById('uploadForm');
     const gallery = document.getElementById('gallery');
+    const toast = document.getElementById('toast');
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -109,22 +178,16 @@
       }
 
       const fileName = `${Date.now()}_${file.name}`;
-      const { data: uploaded, error: uploadError } = await supabase
-        .storage.from('galeri')
-        .upload(fileName, file);
+      const { error: uploadError } = await supabase.storage.from('galeri').upload(fileName, file);
 
       if (uploadError) {
         alert('Upload gagal: ' + uploadError.message);
         return;
       }
 
-      const { data: publicURL } = supabase
-        .storage.from('galeri')
-        .getPublicUrl(fileName);
+      const { data: publicURL } = supabase.storage.from('galeri').getPublicUrl(fileName);
 
-      const { error: insertError } = await supabase
-        .from('galeri')
-        .insert([{ title, image_url: publicURL.publicUrl }]);
+      const { error: insertError } = await supabase.from('galeri').insert([{ title, image_url: publicURL.publicUrl }]);
 
       if (insertError) {
         alert('Gagal simpan ke database: ' + insertError.message);
@@ -132,15 +195,18 @@
       }
 
       form.reset();
-      loadGaleri(); // Refresh galeri
+      showToast("Upload berhasil!");
+      loadGaleri();
     });
 
-    async function loadGaleri() {
-      const { data, error } = await supabase
-        .from('galeri')
-        .select('*')
-        .order('created_at', { ascending: false });
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
 
+    async function loadGaleri() {
+      const { data, error } = await supabase.from('galeri').select('*').order('created_at', { ascending: false });
       gallery.innerHTML = '';
 
       if (error) {
@@ -151,6 +217,8 @@
       data.forEach(item => {
         const card = document.createElement('div');
         card.className = 'gallery-card';
+        card.setAttribute('data-aos', 'zoom-in');
+
         card.innerHTML = `
           <button class="delete-btn" onclick="hapusFoto(${item.id})">Hapus</button>
           <img src="${item.image_url}" alt="${item.title}" />
@@ -158,20 +226,19 @@
         `;
         gallery.appendChild(card);
       });
+
+      AOS.refresh();
     }
 
     window.hapusFoto = async function(id) {
       const confirmDelete = confirm('Yakin ingin menghapus gambar ini?');
       if (!confirmDelete) return;
 
-      const { error } = await supabase
-        .from('galeri')
-        .delete()
-        .eq('id', id);
-
+      const { error } = await supabase.from('galeri').delete().eq('id', id);
       if (error) {
         alert('Gagal menghapus gambar.');
       } else {
+        showToast("Gambar berhasil dihapus!");
         loadGaleri();
       }
     }
@@ -181,7 +248,7 @@
       window.location.href = '../index.html';
     }
 
-    loadGaleri(); // tampilkan galeri saat dibuka
+    loadGaleri();
   </script>
 </body>
 </html>
