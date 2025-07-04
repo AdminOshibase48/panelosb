@@ -1,49 +1,79 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Galeri Komunitas OSHIBASE48</title>
+  <meta charset="UTF-8" />
+  <title>Galeri Komunitas - OSHIBASE48</title>
   <style>
     body {
-      font-family: sans-serif;
-      background: #f4f4f4;
+      font-family: 'Segoe UI', sans-serif;
       margin: 0;
-      padding: 0;
+      background-color: #f4f7fb;
     }
 
     .container {
-      max-width: 800px;
+      max-width: 1000px;
       margin: auto;
+      padding: 30px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #1e3a8a;
+      margin-bottom: 30px;
+    }
+
+    form {
+      background: #ffffff;
       padding: 20px;
-      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+      margin-bottom: 30px;
     }
 
     input, button {
-      padding: 10px;
-      margin: 8px 0;
       width: 100%;
-      box-sizing: border-box;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #1e3a8a;
+      color: white;
+      cursor: pointer;
     }
 
     .gallery-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
       gap: 20px;
-      margin-top: 20px;
     }
 
     .gallery-card {
-      background: #fff;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease;
       text-align: center;
+    }
+
+    .gallery-card:hover {
+      transform: translateY(-5px);
     }
 
     .gallery-card img {
       width: 100%;
-      border-radius: 6px;
+      display: block;
+    }
+
+    .gallery-card p {
+      padding: 10px;
+      margin: 0;
+      color: #1e3a8a;
+      font-weight: bold;
     }
 
     .toast {
@@ -69,11 +99,10 @@
   </style>
 </head>
 <body>
-
   <div class="container">
-    <h1>Galeri OSHIBASE48</h1>
+    <h1>Galeri Komunitas OSHIBASE48</h1>
 
-    <!-- Upload Form -->
+    <!-- Form Upload -->
     <form id="uploadForm">
       <input type="text" id="title" placeholder="Judul Gambar" required />
       <input type="file" id="image" accept="image/*" required />
@@ -84,10 +113,9 @@
     <div id="gallery" class="gallery-grid"></div>
   </div>
 
-  <!-- Notifikasi Toast -->
+  <!-- Toast Notifikasi -->
   <div id="toast" class="toast">Berhasil upload!</div>
 
-  <!-- Script Upload -->
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
@@ -103,78 +131,53 @@
       e.preventDefault();
       const title = document.getElementById('title').value;
       const file = document.getElementById('image').files[0];
-
-      if (!title || !file) {
-        alert("Lengkapi judul dan file gambar!");
-        return;
-      }
-
       const fileName = `${Date.now()}_${file.name}`;
 
-      // Upload ke Supabase Storage
-      const { error: uploadError } = await supabase
-        .storage
-        .from('galeri')
-        .upload(fileName, file);
-
+      const { error: uploadError } = await supabase.storage.from('galeri').upload(fileName, file);
       if (uploadError) {
-        alert("Gagal upload gambar: " + uploadError.message);
+        alert("Upload gagal: " + uploadError.message);
         return;
       }
 
-      // Ambil URL Public
-      const { data: publicURL } = supabase
-        .storage
-        .from('galeri')
-        .getPublicUrl(fileName);
-
-      // Simpan ke tabel galeri
-      const { error: insertError } = await supabase
-        .from('galeri')
-        .insert([{ title, image_url: publicURL.publicUrl }]);
-
+      const { data: publicURL } = supabase.storage.from('galeri').getPublicUrl(fileName);
+      const { error: insertError } = await supabase.from('galeri').insert([{ title, image_url: publicURL.publicUrl }]);
       if (insertError) {
         alert("Gagal simpan ke database: " + insertError.message);
         return;
       }
 
       form.reset();
+      showToast("Upload berhasil!");
       loadGaleri();
-      showToast("Berhasil upload!");
     });
 
     async function loadGaleri() {
-      const { data, error } = await supabase
-        .from('galeri')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      gallery.innerHTML = '';
-
+      const { data, error } = await supabase.from('galeri').select('*').order('created_at', { ascending: false });
       if (error) {
-        gallery.innerHTML = '<p>Gagal memuat galeri.</p>';
+        alert("Gagal memuat galeri");
         return;
       }
 
+      gallery.innerHTML = '';
       data.forEach(item => {
         const card = document.createElement('div');
         card.className = 'gallery-card';
         card.innerHTML = `
           <img src="${item.image_url}" alt="${item.title}" />
-          <p><strong>${item.title}</strong></p>
+          <p>${item.title}</p>
         `;
         gallery.appendChild(card);
       });
     }
 
-    function showToast(message) {
+    function showToast(msg) {
       const toast = document.getElementById('toast');
-      toast.textContent = message;
+      toast.textContent = msg;
       toast.classList.add('show');
       setTimeout(() => toast.classList.remove('show'), 3000);
     }
 
-    loadGaleri(); // tampilkan galeri saat buka
+    loadGaleri();
   </script>
 </body>
 </html>
