@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Galeri Komunitas - OSHIBASE48</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    form {
+      margin-bottom: 30px;
+    }
+
+    input, button {
+      padding: 10px;
+      margin: 5px 0;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 20px;
+    }
+
+    .gallery-card {
+      background: white;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      position: relative;
+      text-align: center;
+    }
+
+    .gallery-card img {
+      width: 100%;
+      border-radius: 6px;
+    }
+
+    .delete-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: #e11d48;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .logout-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #ef4444;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <button class="logout-btn" onclick="logout()">Logout</button>
+
+  <div class="container">
+    <h1>Galeri Komunitas OSHIBASE48</h1>
+
+    <!-- Form Upload -->
+    <form id="uploadForm">
+      <input type="text" id="title" placeholder="Judul Gambar" required />
+      <input type="file" id="image" accept="image/*" required />
+      <button type="submit">Upload</button>
+    </form>
+
+    <!-- Grid Galeri -->
+    <div id="gallery" class="gallery-grid"></div>
+  </div>
+
+  <!-- Supabase + Script -->
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    // ✅ GANTI dengan project kamu
+    const supabase = createClient(
+      'https://nuvfnnxuxtthbryesliu.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51dmZubnh1eHR0aGJyeWVzbGl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1Mzk1NTYsImV4cCI6MjA2NzExNTU1Nn0.Om73FRiKvdlWpZS-hIXCIKznjkQ3A3X3k1n2IzGzRes'
+    );
+
+    const form = document.getElementById('uploadForm');
+    const gallery = document.getElementById('gallery');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const title = document.getElementById('title').value;
+      const file = document.getElementById('image').files[0];
+
+      if (!title || !file) {
+        alert("Lengkapi judul dan file gambar!");
+        return;
+      }
+
+      const fileName = `${Date.now()}_${file.name}`;
+      const { data: uploaded, error: uploadError } = await supabase
+        .storage.from('galeri')
+        .upload(fileName, file);
+
+      if (uploadError) {
+        alert('Upload gagal: ' + uploadError.message);
+        return;
+      }
+
+      const { data: publicURL } = supabase
+        .storage.from('galeri')
+        .getPublicUrl(fileName);
+
+      const { error: insertError } = await supabase
+        .from('galeri')
+        .insert([{ title, image_url: publicURL.publicUrl }]);
+
+      if (insertError) {
+        alert('Gagal simpan ke database: ' + insertError.message);
+        return;
+      }
+
+      form.reset();
+      loadGaleri(); // Refresh galeri
+    });
+
+    async function loadGaleri() {
+      const { data, error } = await supabase
+        .from('galeri')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      gallery.innerHTML = '';
+
+      if (error) {
+        gallery.innerHTML = '<p>Gagal memuat galeri.</p>';
+        return;
+      }
+
+      data.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'gallery-card';
+        card.innerHTML = `
+          <button class="delete-btn" onclick="hapusFoto(${item.id})">Hapus</button>
+          <img src="${item.image_url}" alt="${item.title}" />
+          <p><strong>${item.title}</strong></p>
+        `;
+        gallery.appendChild(card);
+      });
+    }
+
+    window.hapusFoto = async function(id) {
+      const confirmDelete = confirm('Yakin ingin menghapus gambar ini?');
+      if (!confirmDelete) return;
+
+      const { error } = await supabase
+        .from('galeri')
+        .delete()
+        .eq('id', id);
+
+      if (error) {
+        alert('Gagal menghapus gambar.');
+      } else {
+        loadGaleri();
+      }
+    }
+
+    window.logout = async function () {
+      await supabase.auth.signOut();
+      window.location.href = '../index.html';
+    }
+
+    loadGaleri(); // tampilkan galeri saat dibuka
+  </script>
+</body>
+</html>
