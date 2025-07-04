@@ -1,16 +1,98 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-  <title>Upload Galeri</title>
-  <script type="module" src="js/upload-galeri.js" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Upload Galeri - OSHIBASE48</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <style>
+    body {
+      background-color: #f5f9ff;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .upload-container {
+      max-width: 600px;
+      margin: 60px auto;
+      padding: 30px;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      text-align: center;
+      color: #1e3a8a;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    input[type="text"],
+    textarea,
+    input[type="file"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    button {
+      margin-top: 25px;
+      width: 100%;
+      padding: 12px;
+      background-color: #1e40af;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .back-button {
+      display: inline-block;
+      margin-top: 15px;
+      text-align: center;
+      text-decoration: none;
+      color: #1e3a8a;
+      font-size: 14px;
+      display: block;
+    }
+
+    @media (max-width: 600px) {
+      .upload-container {
+        margin: 30px 20px;
+        padding: 20px;
+      }
+    }
+  </style>
+
+  <script type="module" src="../assets/js/upload-galeri.js" defer></script>
 </head>
 <body>
-  <h1>Upload Foto Galeri</h1>
-  <form id="galeriForm">
-    <input type="text" id="title" placeholder="Judul Galeri" required /><br />
-    <textarea id="description" placeholder="Deskripsi" required></textarea><br />
-    <input type="file" id="image" accept="image/*" required /><br />
-    <button type="submit">Upload</button>
-  </form>
+  <div class="upload-container">
+    <h1>Upload Foto Galeri</h1>
+    <form id="galeriForm">
+      <label for="title">Judul</label>
+      <input type="text" id="title" placeholder="Contoh: Kegiatan Fans Gathering" required />
+
+      <label for="description">Deskripsi</label>
+      <textarea id="description" rows="4" placeholder="Tuliskan deskripsi kegiatan..." required></textarea>
+
+      <label for="image">Pilih Gambar</label>
+      <input type="file" id="image" accept="image/*" required />
+
+      <button type="submit">Upload Galeri</button>
+    </form>
+
+    <a href="dashboard.html" class="back-button">← Kembali ke Dashboard</a>
+  </div>
 </body>
 </html>
