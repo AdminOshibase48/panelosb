@@ -2,29 +2,13 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Berita Admin - OSHIBASE48</title>
-  <link rel="stylesheet" href="../assets/css/style.css" />
+  <title>Kelola Berita - OSHIBASE48</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f5f9ff;
-      margin: 0;
-      padding: 0;
-    }
-
     .container {
       max-width: 800px;
       margin: auto;
-      padding: 30px 20px;
-      background-color: #ffffff;
-      margin-top: 40px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-    }
-
-    h1 {
-      text-align: center;
-      color: #1e3a8a;
+      padding: 20px;
     }
 
     form {
@@ -32,90 +16,55 @@
     }
 
     input, textarea, button {
+      padding: 10px;
+      margin: 5px 0;
       width: 100%;
-      padding: 12px;
-      margin: 8px 0;
       box-sizing: border-box;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-
-    button {
-      background-color: #1e40af;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
     }
 
     .berita-list {
-      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
 
-    .berita-item {
-      background: #f9f9f9;
+    .berita-card {
+      background: white;
       padding: 15px;
       border-radius: 8px;
-      margin-bottom: 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
       position: relative;
-    }
-
-    .berita-item h3 {
-      margin: 0;
-      color: #1e3a8a;
     }
 
     .delete-btn {
       position: absolute;
-      top: 15px;
-      right: 15px;
-      background: #e11d48;
+      top: 10px;
+      right: 10px;
+      background: crimson;
       color: white;
       border: none;
-      padding: 6px 10px;
+      padding: 6px 12px;
       border-radius: 5px;
       cursor: pointer;
-      font-size: 12px;
-    }
-
-    .toast {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: #16a34a;
-      color: white;
-      padding: 14px 20px;
-      border-radius: 8px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      font-weight: bold;
-      opacity: 0;
-      transform: translateY(-20px);
-      transition: all 0.4s ease;
-      z-index: 1000;
-    }
-
-    .toast.show {
-      opacity: 1;
-      transform: translateY(0);
     }
   </style>
 </head>
 <body>
-
-  <div class="toast" id="toast">Berita berhasil ditambahkan!</div>
-
   <div class="container">
-    <h1>Kelola Berita - OSHIBASE48</h1>
+    <h2>Kelola Berita OSHIBASE48</h2>
 
-    <form id="beritaForm">
-      <input type="text" id="title" placeholder="Judul Berita" required />
-      <textarea id="content" placeholder="Isi Berita" rows="5" required></textarea>
+    <!-- Form Tambah Berita -->
+    <form id="formBerita">
+      <input type="text" id="judul" placeholder="Judul Berita" required />
+      <textarea id="isi" rows="4" placeholder="Isi berita..." required></textarea>
       <button type="submit">Tambah Berita</button>
     </form>
 
-    <div id="beritaList" class="berita-list"></div>
+    <!-- Preview Daftar Berita -->
+    <div id="list-berita" class="berita-list"></div>
   </div>
 
-  <!-- Script Supabase -->
+  <!-- Supabase Script -->
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
@@ -124,66 +73,64 @@
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51dmZubnh1eHR0aGJyeWVzbGl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1Mzk1NTYsImV4cCI6MjA2NzExNTU1Nn0.Om73FRiKvdlWpZS-hIXCIKznjkQ3A3X3k1n2IzGzRes'
     );
 
-    const form = document.getElementById('beritaForm');
-    const list = document.getElementById('beritaList');
-    const toast = document.getElementById('toast');
+    const form = document.getElementById('formBerita');
+    const list = document.getElementById('list-berita');
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const title = document.getElementById('title').value;
-      const content = document.getElementById('content').value;
+      const title = document.getElementById('judul').value;
+      const content = document.getElementById('isi').value;
 
-      const { error } = await supabase.from('berita').insert([{ title, content }]);
+      const { error } = await supabase
+        .from('berita')
+        .insert([{ title, content, created_at: new Date().toISOString() }]);
 
       if (error) {
         alert("Gagal menambahkan berita: " + error.message);
-        return;
+      } else {
+        form.reset();
+        loadBerita();
       }
-
-      form.reset();
-      showToast("Berhasil menambahkan berita!");
-      loadBerita();
     });
 
     async function loadBerita() {
-      const { data, error } = await supabase.from('berita').select('*').order('created_at', { descending: true });
+      const { data, error } = await supabase
+        .from('berita')
+        .select('*')
+        .order('created_at', { ascending: false });
 
-      list.innerHTML = '';
       if (error) {
-        list.innerHTML = '<p>Gagal memuat berita.</p>';
+        list.innerHTML = "<p>Gagal memuat berita.</p>";
         return;
       }
 
+      list.innerHTML = '';
       data.forEach(item => {
         const div = document.createElement('div');
-        div.className = 'berita-item';
+        div.className = 'berita-card';
         div.innerHTML = `
+          <button class="delete-btn" onclick="hapusBerita(${item.id})">Hapus</button>
           <h3>${item.title}</h3>
           <p>${item.content}</p>
-          <button class="delete-btn" onclick="hapusBerita(${item.id})">Hapus</button>
         `;
         list.appendChild(div);
       });
     }
 
     window.hapusBerita = async function(id) {
-      const confirmDelete = confirm("Yakin ingin menghapus berita ini?");
+      const confirmDelete = confirm('Yakin ingin menghapus berita ini?');
       if (!confirmDelete) return;
 
-      const { error } = await supabase.from('berita').delete().eq('id', id);
+      const { error } = await supabase
+        .from('berita')
+        .delete()
+        .eq('id', id);
+
       if (error) {
-        alert("Gagal menghapus berita.");
-        return;
+        alert('Gagal menghapus berita.');
+      } else {
+        loadBerita();
       }
-
-      showToast("Berita berhasil dihapus!");
-      loadBerita();
-    }
-
-    function showToast(message) {
-      toast.textContent = message;
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 3000);
     }
 
     loadBerita();
