@@ -124,6 +124,27 @@ if (!session) {
   window.location.href = '../login.html';
     }
 
+  <script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+  const supabase = createClient(
+    'https://nuvfnnxuxtthbryesliu.supabase.co',
+    'YOUR_PUBLIC_ANON_KEY' // ganti ini dengan anon key kamu
+  );
+
+  // ✅ Cek apakah user sudah login
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) {
+    window.location.href = "../login.html";
+  }
+
+  // ✅ Logout Function
+  window.logout = async function () {
+    await supabase.auth.signOut();
+    window.location.href = "../login.html";
+  }
+</script>
+  
     // Logout
     window.logout = async function () {
       await supabase.auth.signOut();
