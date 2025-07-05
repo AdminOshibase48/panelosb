@@ -2,154 +2,141 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Dashboard | OSHIBASE48</title>
-  <link rel="stylesheet" href="../assets/css/style.css">
+  <title>Dashboard Admin | OSHIBASE48</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #f0f8ff;
+      background: #f5f9ff;
       margin: 0;
     }
 
     header {
-      background-color: #1e3a8a;
-      color: white;
+      background-color: #ffffff;
+      color: #1e3a8a;
       padding: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 20px;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     }
 
     .logout-btn {
-      background: #ef4444;
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: #e11d48;
       color: white;
-      border: none;
       padding: 8px 14px;
+      border: none;
       border-radius: 6px;
       cursor: pointer;
     }
 
     .container {
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
       max-width: 800px;
       margin: auto;
-      padding: 30px 20px;
     }
 
     .dashboard-card {
       background: white;
       border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      padding: 30px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.05);
+      transition: 0.3s;
+      text-align: center;
+      width: 100%;
+    }
+
+    .dashboard-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
     }
 
     .dashboard-card h2 {
-      margin: 0;
+      margin: 0 0 10px;
       color: #1e3a8a;
     }
 
-    .dashboard-card a {
+    a.button {
       display: inline-block;
       margin-top: 10px;
-      padding: 10px 20px;
+      padding: 12px 24px;
       background-color: #1e40af;
       color: white;
       text-decoration: none;
-      border-radius: 6px;
-    }
-
-    .toast {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: #16a34a;
-      color: white;
-      padding: 14px 20px;
       border-radius: 8px;
       font-weight: bold;
-      opacity: 0;
-      transform: translateY(-20px);
-      transition: all 0.4s ease;
-      z-index: 1000;
     }
 
-    .toast.show {
-      opacity: 1;
-      transform: translateY(0);
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #888;
+    }
+
+    /* Animasi AOS */
+    [data-aos] {
+      opacity: 0;
+      transition-property: transform, opacity;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Dashboard Admin - OSHIBASE48</h1>
+    <h1>Dashboard Admin OSHIBASE48</h1>
     <button class="logout-btn" onclick="logout()">Logout</button>
   </header>
 
   <div class="container">
-    <div class="dashboard-card">
-      <h2>Kelola Galeri</h2>
-      <a href="galeri-admin.html">Buka</a>
+    <div class="dashboard-card" data-aos="fade-up">
+      <h2>Galeri Komunitas</h2>
+      <a href="galeri-admin.html" class="button">Kelola Galeri</a>
     </div>
 
-    <div class="dashboard-card">
-      <h2>Kelola Berita</h2>
-      <a href="berita-admin.html">Buka</a>
+    <div class="dashboard-card" data-aos="fade-up" data-aos-delay="100">
+      <h2>Berita Terbaru</h2>
+      <a href="berita-admin.html" class="button">Kelola Berita</a>
     </div>
 
-    <div class="dashboard-card">
-      <h2>Kelola Jadwal</h2>
-      <a href="jadwal-admin.html">Buka</a>
+    <div class="dashboard-card" data-aos="fade-up" data-aos-delay="200">
+      <h2>Jadwal Kegiatan</h2>
+      <a href="jadwal-admin.html" class="button">Kelola Jadwal</a>
     </div>
   </div>
 
-  <!-- Notifikasi Toast -->
-  <div id="toast" class="toast">Berhasil login!</div>
+  <footer>© 2025 OSHIBASE48 Admin Panel</footer>
 
+  <!-- Supabase + AOS -->
   <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    import AOS from 'https://unpkg.com/aos@2.3.1/dist/aos.js';
+
+    AOS.init();
 
     const supabase = createClient(
       'https://nuvfnnxuxtthbryesliu.supabase.co',
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51dmZubnh1eHR0aGJyeWVzbGl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1Mzk1NTYsImV4cCI6MjA2NzExNTU1Nn0.Om73FRiKvdlWpZS-hIXCIKznjkQ3A3X3k1n2IzGzRes'
     );
 
-    // Cek Login
+    // ✅ Proteksi: Jika belum login → redirect ke login.html
     const { data: { session } } = await supabase.auth.getSession();
-if (!session) {
-  window.location.href = '../login.html';
+    if (!session) {
+      window.location.href = '../login.html';
     }
 
-  <script type="module">
-  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
-
-  const supabase = createClient(
-    'https://nuvfnnxuxtthbryesliu.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51dmZubnh1eHR0aGJyeWVzbGl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1Mzk1NTYsImV4cCI6MjA2NzExNTU1Nn0.Om73FRiKvdlWpZS-hIXCIKznjkQ3A3X3k1n2IzGzRes' // ganti ini dengan anon key kamu
-  );
-
-  // ✅ Cek apakah user sudah login
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session) {
-    window.location.href = "../login.html";
-  }
-
-  // ✅ Logout Function
-  window.logout = async function () {
-    await supabase.auth.signOut();
-    window.location.href = "../login.html";
-  }
-</script>
-  
-    // Logout
+    // ✅ Logout
     window.logout = async function () {
       await supabase.auth.signOut();
       window.location.href = '../login.html';
-    }
+    };
   </script>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 </body>
 </html>
