@@ -16,18 +16,19 @@
     }
 
     header {
-      background-color: #1e3a8a;
-      color: white;
+      background-color: #ffffff;
+      color: #1e3a8a;
       padding: 20px;
       text-align: center;
       position: relative;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     }
 
-    .logout-btn {
+    .home-btn {
       position: absolute;
       top: 20px;
-      right: 20px;
-      background-color: #e11d48;
+      left: 20px;
+      background-color: #1e3a8a;
       color: white;
       padding: 8px 14px;
       border: none;
@@ -115,8 +116,8 @@
 </head>
 <body>
   <header>
+    <button class="home-btn" onclick="window.location.href='dashboard.html'">🏠 Home</button>
     <h1>Galeri Admin - OSHIBASE48</h1>
-    <button class="logout-btn" onclick="logout()">Logout</button>
   </header>
 
   <div class="container" data-aos="fade-up">
