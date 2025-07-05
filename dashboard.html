@@ -4,180 +4,41 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard Admin - OSHIBASE48</title>
-  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: #f3f6fc;
-      color: #1e3a8a;
-    }
-
-    header {
-      background: #1e3a8a;
-      color: white;
-      padding: 20px 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo-text {
-      font-size: 1.4rem;
-      font-weight: 700;
-    }
-
-    .logout-btn {
-      background-color: #e11d48;
-      border: none;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .container {
-      padding: 40px 20px;
-      max-width: 1000px;
-      margin: auto;
-    }
-
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 30px;
-      margin-top: 30px;
-    }
-
-    .card {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.05);
-      padding: 30px;
-      text-align: center;
-      transition: 0.3s;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-    }
-
-    .card h2 {
-      font-size: 1.3rem;
-      margin-bottom: 10px;
-      color: #1e40af;
-    }
-
-    .card p {
-      font-size: 0.95rem;
-      color: #444;
-    }
-
-    .card a {
-      display: inline-block;
-      margin-top: 15px;
-      background: #1e40af;
-      color: white;
-      padding: 10px 16px;
-      border-radius: 6px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      color: #888;
-      font-size: 0.9rem;
-    }
-  </style>
+  <link rel="stylesheet" href="../assets/css/admin.css" />
+  <script type="module" src="../assets/js/supabaseClient.js"></script>
 </head>
 <body>
   <header>
-   <!-- Notifikasi Toast -->
-<div id="toast" class="toast">Berhasil login!</div>
-    <div class="logo-text">OSHIBASE48 Admin</div>
+    <div class="left">OSHIBASE48 - Admin</div>
     <button class="logout-btn" onclick="logout()">Logout</button>
   </header>
 
-  <div class="container">
-    <h1 data-aos="fade-up">👋 Selamat datang kembali, Admin Ganteng!</h1>
-    <p data-aos="fade-up" data-aos-delay="100">Pilih menu yang ingin kamu kelola:</p>
+  <div class="admin-container">
+    <h1>Dashboard Admin</h1>
 
-    <div class="dashboard-grid">
-      <div class="card" data-aos="zoom-in">
-        <h2>📸 Galeri</h2>
-        <p>Tambah & kelola dokumentasi kegiatan komunitas</p>
-        <a href="galeri.html">Kelola Galeri</a>
-      </div>
-
-      <div class="card" data-aos="zoom-in" data-aos-delay="100">
-        <h2>📰 Berita</h2>
-        <p>Kelola update berita seputar OSHIBASE48</p>
-        <a href="upload-berita.html">Kelola Berita</a>
-      </div>
-
-      <div class="card" data-aos="zoom-in" data-aos-delay="200">
-        <h2>📅 Jadwal</h2>
-        <p>Perbarui jadwal kegiatan JKT48 & komunitas</p>
-        <a href="upload-jadwal.html">Kelola Jadwal</a>
-      </div>
+    <div class="card-container">
+      <a href="galeri-admin.html" class="admin-card">📸 Galeri</a>
+      <a href="berita-admin.html" class="admin-card">📰 Berita</a>
+      <a href="jadwal-admin.html" class="admin-card">📅 Jadwal</a>
     </div>
   </div>
 
-  <footer>
-    &copy; 2025 OSHIBASE48 Panel | Dibuat dengan ❤️ untuk komunitas
-  </footer>
-
-  <!-- AOS Animation -->
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-  <script>AOS.init();</script>
+  <div class="toast" id="toast">Berhasil Login</div>
 
   <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-    const supabase = createClient('https://nuvfnnxuxtthbryesliu.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51dmZubnh1eHR0aGJyeWVzbGl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1Mzk1NTYsImV4cCI6MjA2NzExNTU1Nn0.Om73FRiKvdlWpZS-hIXCIKznjkQ3A3X3k1n2IzGzRes');
+    import { supabase } from '../assets/js/supabaseClient.js';
 
     async function logout() {
       await supabase.auth.signOut();
-      window.location.href = "../index.html";
+      window.location.href = '../index.html';
     }
 
     window.logout = logout;
+
+    // Notif animasi
+    const toast = document.getElementById("toast");
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 3000);
   </script>
-  <script>
-  function showToast(text) {
-    const toast = document.getElementById("toast");
-    toast.textContent = text;
-    toast.classList.add("show");
-    setTimeout(() => {
-      toast.classList.remove("show");
-    }, 3000);
-  }
-
-  if (localStorage.getItem("justLoggedIn") === "true") {
-    showToast("Berhasil login!");
-    localStorage.removeItem("justLoggedIn");
-  }
-</script>
-<script>
-  function showToast(text) {
-    const toast = document.getElementById("toast");
-    toast.textContent = text;
-    toast.classList.add("show");
-    setTimeout(() => {
-      toast.classList.remove("show");
-    }, 3000);
-  }
-
-  if (localStorage.getItem("justLoggedIn") === "true") {
-    showToast("Berhasil login!");
-    localStorage.removeItem("justLoggedIn");
-  }
-</script>
-  
 </body>
 </html>
