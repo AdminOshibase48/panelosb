@@ -1,52 +1,134 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login Admin - OSHIBASE48</title>
-  <link rel="stylesheet" href="assets/css/style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard | OSHIBASE48</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f8ff;
+      margin: 0;
+    }
+
+    header {
+      background-color: #1e3a8a;
+      color: white;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .logout-btn {
+      background: #ef4444;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 30px 20px;
+    }
+
+    .dashboard-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    .dashboard-card h2 {
+      margin: 0;
+      color: #1e3a8a;
+    }
+
+    .dashboard-card a {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #1e40af;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+    }
+
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #16a34a;
+      color: white;
+      padding: 14px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: all 0.4s ease;
+      z-index: 1000;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
 </head>
-<body style="margin:0; font-family:'Inter', sans-serif; background-color:#f4f7ff; color:#1e3a8a">
+<body>
+  <header>
+    <h1>Dashboard Admin - OSHIBASE48</h1>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </header>
 
-  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;text-align:center;padding:20px;" data-aos="fade-up">
-    <img src="assets/logo.png" alt="OSHIBASE48 Logo" style="max-width:140px;margin-bottom:20px;" />
-    <h1 style="font-size:2rem;margin-bottom:10px;">OSHIBASE48 ADMIN</h1>
-    <p style="margin-bottom:30px;">Silakan login untuk mengelola website komunitas</p>
-
-    <div class="login-box" style="background:white;padding:30px;border-radius:12px;box-shadow:0 0 15px rgba(0,0,0,0.1);max-width:400px;width:100%">
-      <input type="email" id="email" placeholder="Email Admin" style="width:100%;padding:10px;margin-bottom:15px;border:1px solid #ccc;border-radius:6px" />
-      <input type="password" id="password" placeholder="Password" style="width:100%;padding:10px;margin-bottom:20px;border:1px solid #ccc;border-radius:6px" />
-      <button onclick="login()" style="width:100%;padding:12px;background-color:#1e40af;color:white;border:none;border-radius:6px;font-weight:bold;cursor:pointer">Login</button>
+  <div class="container">
+    <div class="dashboard-card">
+      <h2>Kelola Galeri</h2>
+      <a href="galeri-admin.html">Buka</a>
     </div>
 
-    <footer style="margin-top:40px;font-size:0.9rem;color:#777">© 2025 OSHIBASE48 Community</footer>
+    <div class="dashboard-card">
+      <h2>Kelola Berita</h2>
+      <a href="berita-admin.html">Buka</a>
+    </div>
+
+    <div class="dashboard-card">
+      <h2>Kelola Jadwal</h2>
+      <a href="jadwal-admin.html">Buka</a>
+    </div>
   </div>
+
+  <!-- Notifikasi Toast -->
+  <div id="toast" class="toast">Berhasil login!</div>
 
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-    const supabase = createClient('https://nuvfnnxuxtthbryesliu.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51dmZubnh1eHR0aGJyeWVzbGl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1Mzk1NTYsImV4cCI6MjA2NzExNTU1Nn0.Om73FRiKvdlWpZS-hIXCIKznjkQ3A3X3k1n2IzGzRes');
+    const supabase = createClient(
+      'https://nuvfnnxuxtthbryesliu.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51dmZubnh1eHR0aGJyeWVzbGl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1Mzk1NTYsImV4cCI6MjA2NzExNTU1Nn0.Om73FRiKvdlWpZS-hIXCIKznjkQ3A3X3k1n2IzGzRes'
+    );
 
-    window.login = async function() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
+    // Cek Login
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      window.location.href = '../login.html'; // redirect kalau belum login
+    }
 
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-
-      if (error) {
-        alert("Gagal Login: " + error.message);
-      } else {
-      localStorage.setItem("justLoggedIn", "true");
-window.location.href = "dashboard.html";
-
-      }
+    // Logout
+    window.logout = async function () {
+      await supabase.auth.signOut();
+      window.location.href = '../login.html';
     }
   </script>
-
-  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-  <script>AOS.init();</script>
 </body>
 </html>
