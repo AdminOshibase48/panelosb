@@ -5,40 +5,131 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard Admin - OSHIBASE48</title>
   <link rel="stylesheet" href="../assets/css/admin.css" />
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <script type="module" src="../assets/js/supabaseClient.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background: #f0f4ff;
+    }
+
+    header {
+      background: white;
+      padding: 20px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ddd;
+    }
+
+    header .logo {
+      font-size: 20px;
+      font-weight: bold;
+      color: #1e3a8a;
+    }
+
+    .logout-btn {
+      background: #e11d48;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 50px 20px;
+      text-align: center;
+    }
+
+    .dashboard-title {
+      font-size: 32px;
+      margin-bottom: 40px;
+      color: #1e3a8a;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 30px;
+    }
+
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      text-decoration: none;
+      color: #1e3a8a;
+      font-size: 18px;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      background: #e0ecff;
+    }
+
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #22c55e;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: all 0.5s ease;
+      z-index: 9999;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
 </head>
 <body>
   <header>
-    <div class="left">OSHIBASE48 - Admin</div>
+    <div class="logo">OSHIBASE48 Admin Panel</div>
     <button class="logout-btn" onclick="logout()">Logout</button>
   </header>
 
-  <div class="admin-container">
-    <h1>Dashboard Admin</h1>
-
-    <div class="card-container">
-      <a href="galeri-admin.html" class="admin-card">📸 Galeri</a>
-      <a href="berita-admin.html" class="admin-card">📰 Berita</a>
-      <a href="jadwal-admin.html" class="admin-card">📅 Jadwal</a>
+  <div class="container" data-aos="fade-up">
+    <div class="dashboard-title">Selamat Datang Admin 👋</div>
+    <div class="card-grid">
+      <a href="galeri-admin.html" class="card" data-aos="zoom-in" data-aos-delay="100">📸 Kelola Galeri</a>
+      <a href="berita-admin.html" class="card" data-aos="zoom-in" data-aos-delay="200">📰 Kelola Berita</a>
+      <a href="jadwal-admin.html" class="card" data-aos="zoom-in" data-aos-delay="300">📅 Kelola Jadwal</a>
     </div>
   </div>
 
-  <div class="toast" id="toast">Berhasil Login</div>
+  <div class="toast" id="toast">Berhasil login</div>
 
-  <script type="module">
-    import { supabase } from '../assets/js/supabaseClient.js';
+  <!-- AOS & Script -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init();
 
-    async function logout() {
-      await supabase.auth.signOut();
-      window.location.href = '../index.html';
-    }
-
-    window.logout = logout;
-
-    // Notif animasi
+    // Notifikasi
     const toast = document.getElementById("toast");
     toast.classList.add("show");
     setTimeout(() => toast.classList.remove("show"), 3000);
+
+    // Logout
+    async function logout() {
+      const { supabase } = await import('../assets/js/supabaseClient.js');
+      await supabase.auth.signOut();
+      window.location.href = "../index.html";
+    }
+
+    window.logout = logout;
   </script>
 </body>
 </html>
