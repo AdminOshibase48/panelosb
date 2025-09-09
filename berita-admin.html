@@ -238,7 +238,7 @@
         imageUrl = await getDownloadURL(storageRef);
       }
 
-      await addDoc(collection(db, "Berita"), {
+      await addDoc(collection(db, "berita"), {
         judul,
         isi,
         gambar: imageUrl,
@@ -255,7 +255,7 @@
     // Load Berita
     async function loadBerita() {
       beritaList.innerHTML = "";
-      const querySnapshot = await getDocs(collection(db, "Berita"));
+      const querySnapshot = await getDocs(collection(db, "berita"));
       querySnapshot.forEach((docu) => {
         const data = docu.data();
         const tr = document.createElement("tr");
