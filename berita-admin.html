@@ -2,227 +2,285 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Kelola Berita - OSHIBASE48</title>
-  <link rel="stylesheet" href="../assets/css/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Admin - Berita</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f0f8ff;
       margin: 0;
-      padding: 0;
-    }
-
-    .topbar {
-      background-color: #1e3a8a;
-      color: white;
-      padding: 15px 20px;
+      font-family: 'Poppins', sans-serif;
+      background: #f4f6fb;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
     }
-
-    .topbar h2 {
-      margin: 0;
-      font-size: 18px;
-    }
-
-    .home-btn {
-      background: white;
-      color: #1e3a8a;
-      padding: 6px 12px;
-      border-radius: 6px;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .container {
-      max-width: 800px;
-      margin: auto;
-      padding: 30px 20px;
-    }
-
-    form {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-      margin-bottom: 30px;
-    }
-
-    input, textarea, button {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-
-    button {
-      background-color: #1e40af;
-      color: white;
-      font-weight: bold;
-      border: none;
-      transition: background 0.3s;
-    }
-
-    button:hover {
-      background-color: #1e3a8a;
-    }
-
-    .berita-list {
+    /* Sidebar */
+    .sidebar {
+      width: 240px;
+      background: #242D4C;
+      color: #F1EAD8;
       display: flex;
       flex-direction: column;
-      gap: 20px;
-    }
-
-    .berita-card {
-      background: white;
-      border-radius: 10px;
-      padding: 15px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-      position: relative;
-    }
-
-    .berita-card h3 {
-      margin-top: 0;
-      color: #1e3a8a;
-    }
-
-    .delete-btn {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      background: crimson;
-      color: white;
-      border: none;
-      padding: 6px 10px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 12px;
-    }
-
-    .toast {
+      padding: 20px 0;
       position: fixed;
-      top: 20px;
-      right: 20px;
-      background: #16a34a;
-      color: white;
-      padding: 14px 20px;
-      border-radius: 8px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      font-weight: bold;
-      opacity: 0;
-      transform: translateY(-20px);
-      transition: all 0.4s ease;
-      z-index: 999;
+      height: 100%;
     }
-
-    .toast.show {
-      opacity: 1;
-      transform: translateY(0);
+    .sidebar .logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .sidebar .logo img {
+      width: 60px;
+      border-radius: 50%;
+    }
+    .sidebar h2 {
+      font-size: 18px;
+      margin: 10px 0 20px;
+    }
+    .sidebar a {
+      padding: 12px 20px;
+      color: #F1EAD8;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      transition: 0.3s;
+    }
+    .sidebar a:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    .sidebar i {
+      margin-right: 10px;
+    }
+    /* Main */
+    .main {
+      margin-left: 240px;
+      padding: 30px;
+      flex: 1;
+    }
+    h1 {
+      margin-bottom: 20px;
+      color: #242D4C;
+    }
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      animation: fadeIn 0.5s ease;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(10px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      background: #242D4C;
+      color: #F1EAD8;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #3a4570;
+    }
+    .preview {
+      margin-top: 10px;
+    }
+    .preview img {
+      max-width: 200px;
+      border-radius: 8px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    table th, table td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+    table th {
+      background: #242D4C;
+      color: #fff;
+    }
+    .thumb {
+      width: 80px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+    .actions button {
+      margin-right: 5px;
     }
   </style>
 </head>
 <body>
-  <div class="topbar">
-    <h2>Berita Admin - OSHIBASE48</h2>
-    <button class="home-btn" onclick="window.location.href='dashboard.html'">Home</button>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo">
+      <img src="img/logo.png" alt="Logo">
+      <h2>Admin Panel</h2>
+    </div>
+    <a href="dashboard.html"><i class="fa fa-home"></i> Dashboard</a>
+    <a href="jadwal.html"><i class="fa fa-calendar"></i> Jadwal</a>
+    <a href="berita.html"><i class="fa fa-newspaper"></i> Berita</a>
+    <a href="galeri.html"><i class="fa fa-images"></i> Galeri</a>
+    <a href="#" id="logout"><i class="fa fa-sign-out-alt"></i> Logout</a>
   </div>
 
-  <div class="container">
-    <!-- Form Tambah Berita -->
-    <form id="formBerita">
-      <input type="text" id="judul" placeholder="Judul Berita" required />
-      <textarea id="isi" rows="5" placeholder="Isi berita..." required></textarea>
-      <button type="submit">Tambah Berita</button>
-    </form>
+  <!-- Main -->
+  <div class="main">
+    <h1>Manajemen Berita</h1>
 
-    <!-- Daftar Berita -->
-    <div id="list-berita" class="berita-list"></div>
+    <!-- Form Tambah -->
+    <div class="card">
+      <h3>Tambah Berita</h3>
+      <form id="beritaForm">
+        <div class="form-group">
+          <label>Judul</label>
+          <input type="text" id="judul" required>
+        </div>
+        <div class="form-group">
+          <label>Isi</label>
+          <textarea id="isi" rows="4" required></textarea>
+        </div>
+        <div class="form-group">
+          <label>Upload Gambar</label>
+          <input type="file" id="gambarFile" accept="image/*">
+          <div class="preview" id="preview"></div>
+        </div>
+        <button type="submit">Simpan</button>
+      </form>
+    </div>
+
+    <!-- List Berita -->
+    <div class="card">
+      <h3>Daftar Berita</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Gambar</th>
+            <th>Judul</th>
+            <th>Tanggal</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="beritaList"></tbody>
+      </table>
+    </div>
   </div>
 
-  <!-- Toast Notifikasi -->
-  <div id="toast" class="toast">Berita berhasil ditambahkan!</div>
-
+  <!-- Firebase -->
   <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-storage.js";
 
-    const supabase = createClient(
-      'https://nuvfnnxuxtthbryesliu.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51dmZubnh1eHR0aGJyeWVzbGl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1Mzk1NTYsImV4cCI6MjA2NzExNTU1Nn0.Om73FRiKvdlWpZS-hIXCIKznjkQ3A3X3k1n2IzGzRes'
-    );
+    // Config Firebase kamu
+    const firebaseConfig = {
+      apiKey: "AIzaSyCOE7WS4EtPjZHluOOwsAdcPTTtuOokUoo",
+      authDomain: "oshibase48ofc-e801c.firebaseapp.com",
+      projectId: "oshibase48ofc-e801c",
+      storageBucket: "oshibase48ofc-e801c.firebasestorage.app",
+      messagingSenderId: "116325605670",
+      appId: "1:116325605670:web:b8d14f682126207b6be1e7"
+      measurementId: "G-QTLFCQ7MPJ"
+    };
 
-    const form = document.getElementById('formBerita');
-    const list = document.getElementById('list-berita');
-    const toast = document.getElementById('toast');
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const title = document.getElementById('judul').value;
-      const content = document.getElementById('isi').value;
+    const beritaForm = document.getElementById("beritaForm");
+    const beritaList = document.getElementById("beritaList");
+    const gambarFile = document.getElementById("gambarFile");
+    const preview = document.getElementById("preview");
 
-      const { error } = await supabase
-        .from('berita')
-        .insert([{ title, content, created_at: new Date().toISOString() }]);
+    let file = null;
 
-      if (error) {
-        alert("Gagal menambahkan berita: " + error.message);
-      } else {
-        form.reset();
-        showToast("Berita berhasil ditambahkan!");
-        loadBerita();
+    gambarFile.addEventListener("change", e => {
+      file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          preview.innerHTML = `<img src="${e.target.result}" alt="preview">`;
+        };
+        reader.readAsDataURL(file);
       }
     });
 
-    async function loadBerita() {
-      const { data, error } = await supabase
-        .from('berita')
-        .select('*')
-        .order('created_at', { ascending: false });
+    // Tambah Berita
+    beritaForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const judul = document.getElementById("judul").value;
+      const isi = document.getElementById("isi").value;
+      let imageUrl = "";
 
-      if (error) {
-        list.innerHTML = "<p>Gagal memuat berita.</p>";
-        return;
+      if (file) {
+        const storageRef = ref(storage, 'berita/' + Date.now() + '-' + file.name);
+        await uploadBytes(storageRef, file);
+        imageUrl = await getDownloadURL(storageRef);
       }
 
-      list.innerHTML = '';
-      data.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'berita-card';
-        div.innerHTML = `
-          <button class="delete-btn" onclick="hapusBerita(${item.id})">Hapus</button>
-          <h3>${item.title}</h3>
-          <p>${item.content}</p>
+      await addDoc(collection(db, "Berita"), {
+        judul,
+        isi,
+        gambar: imageUrl,
+        tanggal: serverTimestamp()
+      });
+
+      alert("Berita berhasil ditambahkan!");
+      beritaForm.reset();
+      preview.innerHTML = "";
+      file = null;
+      loadBerita();
+    });
+
+    // Load Berita
+    async function loadBerita() {
+      beritaList.innerHTML = "";
+      const querySnapshot = await getDocs(collection(db, "Berita"));
+      querySnapshot.forEach((docu) => {
+        const data = docu.data();
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><img src="${data.gambar}" class="thumb"></td>
+          <td>${data.judul}</td>
+          <td>${data.tanggal?.toDate ? data.tanggal.toDate().toLocaleString() : ""}</td>
+          <td class="actions">
+            <button onclick="hapusBerita('${docu.id}')">Hapus</button>
+          </td>
         `;
-        list.appendChild(div);
+        beritaList.appendChild(tr);
       });
     }
 
-    window.hapusBerita = async function(id) {
-      const confirmDelete = confirm('Yakin ingin menghapus berita ini?');
-      if (!confirmDelete) return;
-
-      const { error } = await supabase
-        .from('berita')
-        .delete()
-        .eq('id', id);
-
-      if (error) {
-        alert('Gagal menghapus berita.');
-      } else {
-        showToast("Berita berhasil dihapus.");
+    // Hapus Berita
+    window.hapusBerita = async (id) => {
+      if (confirm("Yakin ingin menghapus berita ini?")) {
+        await deleteDoc(doc(db, "Berita", id));
         loadBerita();
       }
-    }
-
-    function showToast(message) {
-      toast.textContent = message;
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 3000);
-    }
+    };
 
     loadBerita();
   </script>
+
 </body>
 </html>
