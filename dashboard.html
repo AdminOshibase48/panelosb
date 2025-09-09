@@ -141,10 +141,12 @@
   </footer>
 
   <script>
-    // 🔐 Cek login token
-    if (!localStorage.getItem("isLoggedIn")) {
-      window.location.href = "login.html"; // lempar balik ke login
-    }
+    // 🔐 Cek login token saat load
+    document.addEventListener("DOMContentLoaded", () => {
+      if (!localStorage.getItem("isLoggedIn")) {
+        window.location.href = "login.html";
+      }
+    });
 
     function buka(page) {
       window.location.href = page;
