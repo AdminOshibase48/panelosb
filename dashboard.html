@@ -16,47 +16,91 @@
 
     /* Sidebar */
     .sidebar {
-      width: 220px;
+      width: 240px;
       height: 100vh;
       background: #1a1f33;
       display: flex;
       flex-direction: column;
-      padding: 20px;
+      justify-content: space-between;
+      padding: 20px 0;
       position: fixed;
       transition: all 0.3s ease;
-    }
-    .sidebar h2 {
-      margin: 0 0 20px;
-      font-size: 1.2rem;
-      text-align: center;
-      color: #F1EAD8;
-    }
-    .sidebar a {
-      text-decoration: none;
-      color: #F1EAD8;
-      padding: 12px;
-      margin: 6px 0;
-      border-radius: 8px;
-      transition: background 0.3s ease;
-      display: block;
-    }
-    .sidebar a:hover {
-      background: #2f3b66;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.3);
     }
 
-    /* Konten */
+    /* Logo */
+    .sidebar-logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .sidebar-logo img {
+      width: 60px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+    .sidebar-logo h2 {
+      font-size: 1.2rem;
+      color: #F1EAD8;
+      margin: 0;
+    }
+
+    /* Menu */
+    .sidebar-menu {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar-menu a {
+      text-decoration: none;
+      color: #F1EAD8;
+      padding: 12px 20px;
+      border-radius: 8px;
+      margin: 4px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.3s ease;
+    }
+    .sidebar-menu a:hover {
+      background: #2f3b66;
+      transform: translateX(5px);
+    }
+
+    /* Footer Logout */
+    .sidebar-footer {
+      padding: 0 20px;
+    }
+    #logoutBtn {
+      width: 100%;
+      background: #ff4d4d;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+    #logoutBtn:hover {
+      background: #cc0000;
+      transform: scale(1.05);
+    }
+
+    /* Content */
     .content {
-      margin-left: 240px;
+      margin-left: 260px;
       padding: 20px;
       width: 100%;
       transition: all 0.3s ease;
     }
     .content h1 {
       font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+    .content p {
       margin-bottom: 20px;
     }
 
-    /* Card Dashboard */
+    /* Dashboard Cards */
     .card-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -67,44 +111,42 @@
       padding: 20px;
       border-radius: 12px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      transition: transform 0.3s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
     .card:hover {
       transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.5);
     }
-
-    /* Tombol logout */
-    #logoutBtn {
-      margin-top: auto;
-      background: #ff4d4d;
-      color: white;
-      padding: 10px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-    #logoutBtn:hover {
-      background: #cc0000;
+    .card h3 {
+      margin: 0 0 10px;
     }
   </style>
 </head>
 <body>
   <!-- Sidebar -->
   <div class="sidebar">
-    <h2>Admin Panel</h2>
-    <a href="#">📊 Dashboard</a>
-    <a href="#">📰 Kelola Berita</a>
-    <a href="#">📅 Kelola Jadwal</a>
-    <a href="#">🛒 Kelola Shop</a>
-    <a href="#">👥 Kelola User</a>
-    <button id="logoutBtn">🚪 Logout</button>
+    <div>
+      <div class="sidebar-logo">
+        <img src="img/logo.png" alt="Logo Admin">
+        <h2>Admin Panel</h2>
+      </div>
+      <div class="sidebar-menu">
+        <a href="#"><span>📊</span> Dashboard</a>
+        <a href="#"><span>📰</span> Kelola Berita</a>
+        <a href="#"><span>📅</span> Kelola Jadwal</a>
+        <a href="#"><span>🛒</span> Kelola Shop</a>
+        <a href="#"><span>👥</span> Kelola User</a>
+      </div>
+    </div>
+    <div class="sidebar-footer">
+      <button id="logoutBtn">🚪 Logout</button>
+    </div>
   </div>
 
   <!-- Konten -->
   <div class="content">
     <h1>Selamat Datang di Panel Admin</h1>
-    <p>Ini adalah halaman utama admin. Pilih menu di sidebar untuk mengelola konten.</p>
+    <p>Pilih menu di sidebar untuk mengelola konten website.</p>
 
     <div class="card-container">
       <div class="card">
@@ -126,6 +168,7 @@
     </div>
   </div>
 
+  <!-- Supabase Script -->
   <script type="module">
     import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
