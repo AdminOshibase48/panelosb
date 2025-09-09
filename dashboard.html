@@ -2,160 +2,148 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Panel OSHIBASE48</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Admin</title>
+  <link rel="stylesheet" href="assets/css/style.css">
   <style>
     body {
-      font-family: 'Poppins', sans-serif;
       margin: 0;
-      background: linear-gradient(135deg, #a0c4ff, #cdb4db);
+      font-family: 'Poppins', sans-serif;
+      background: #242D4C;
+      color: #F1EAD8;
+      display: flex;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 220px;
+      height: 100vh;
+      background: #1a1f33;
       display: flex;
       flex-direction: column;
-      min-height: 100vh;
+      padding: 20px;
+      position: fixed;
+      transition: all 0.3s ease;
     }
-
-    header {
-      background: white;
-      padding: 15px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      animation: slideDown 0.6s ease;
+    .sidebar h2 {
+      margin: 0 0 20px;
+      font-size: 1.2rem;
+      text-align: center;
+      color: #F1EAD8;
     }
-
-    header h1 {
-      color: #242D4C;
-      font-size: 20px;
-      margin: 0;
-    }
-
-    .logout-btn {
-      background: #e63946;
-      color: white;
-      border: none;
-      padding: 8px 14px;
+    .sidebar a {
+      text-decoration: none;
+      color: #F1EAD8;
+      padding: 12px;
+      margin: 6px 0;
       border-radius: 8px;
-      cursor: pointer;
-      transition: transform 0.2s ease, background 0.3s ease;
+      transition: background 0.3s ease;
+      display: block;
     }
-    .logout-btn:hover {
-      background: #d62828;
-      transform: scale(1.05);
-    }
-
-    main {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 40px;
+    .sidebar a:hover {
+      background: #2f3b66;
     }
 
-    .cards {
+    /* Konten */
+    .content {
+      margin-left: 240px;
+      padding: 20px;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+    .content h1 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+    }
+
+    /* Card Dashboard */
+    .card-container {
       display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 20px;
     }
-
     .card {
-      background: white;
-      padding: 30px;
-      border-radius: 16px;
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      animation: fadeIn 0.8s ease forwards;
-      opacity: 0;
+      background: #2f3b66;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease;
     }
-    .card:nth-child(1) { animation-delay: 0.2s; }
-    .card:nth-child(2) { animation-delay: 0.4s; }
-    .card:nth-child(3) { animation-delay: 0.6s; }
-
     .card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      transform: translateY(-5px);
     }
 
-    .card h2 {
-      color: #242D4C;
-      margin-bottom: 15px;
-    }
-
-    .card button {
-      background: #242D4C;
+    /* Tombol logout */
+    #logoutBtn {
+      margin-top: auto;
+      background: #ff4d4d;
       color: white;
+      padding: 10px;
       border: none;
-      padding: 10px 18px;
-      border-radius: 10px;
+      border-radius: 8px;
       cursor: pointer;
-      transition: transform 0.2s ease, background 0.3s ease;
+      transition: background 0.3s ease;
     }
-    .card button:hover {
-      background: #3a4370;
-      transform: scale(1.05);
-    }
-
-    footer {
-      text-align: center;
-      padding: 15px;
-      background: white;
-      font-size: 14px;
-      color: #333;
-    }
-
-    /* Animations */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes slideDown {
-      from { transform: translateY(-50px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+    #logoutBtn:hover {
+      background: #cc0000;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Admin Panel OSHIBASE48</h1>
-    <button class="logout-btn" onclick="logout()">Logout</button>
-  </header>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>Admin Panel</h2>
+    <a href="#">📊 Dashboard</a>
+    <a href="#">📰 Kelola Berita</a>
+    <a href="#">📅 Kelola Jadwal</a>
+    <a href="#">🛒 Kelola Shop</a>
+    <a href="#">👥 Kelola User</a>
+    <button id="logoutBtn">🚪 Logout</button>
+  </div>
 
-  <main>
-    <div class="cards">
+  <!-- Konten -->
+  <div class="content">
+    <h1>Selamat Datang di Panel Admin</h1>
+    <p>Ini adalah halaman utama admin. Pilih menu di sidebar untuk mengelola konten.</p>
+
+    <div class="card-container">
       <div class="card">
-        <h2>Kelola Galeri</h2>
-        <button onclick="buka('galeri.html')">Buka Galeri</button>
+        <h3>Total Berita</h3>
+        <p>12 Artikel</p>
       </div>
       <div class="card">
-        <h2>Kelola Berita</h2>
-        <button onclick="buka('berita.html')">Buka Berita</button>
+        <h3>Event Terjadwal</h3>
+        <p>5 Event</p>
       </div>
       <div class="card">
-        <h2>Kelola Jadwal</h2>
-        <button onclick="buka('jadwal.html')">Buka Jadwal</button>
+        <h3>Produk di Shop</h3>
+        <p>8 Item</p>
+      </div>
+      <div class="card">
+        <h3>Jumlah User</h3>
+        <p>124 Fans</p>
       </div>
     </div>
-  </main>
+  </div>
 
-  <footer>
-    © 2025 OSHIBASE48 Admin Panel
-  </footer>
+  <script type="module">
+    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-  <script>
-    // 🔐 Cek login token saat load
-    document.addEventListener("DOMContentLoaded", () => {
-      if (!localStorage.getItem("isLoggedIn")) {
-        window.location.href = "login.html";
-      }
-    });
+    const supabaseUrl = "https://nuvfnnxuxtthbryesliu.supabase.co"; // ganti
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51dmZubnh1eHR0aGJyeWVzbGl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1Mzk1NTYsImV4cCI6MjA2NzExNTU1Nn0.Om73FRiKvdlWpZS-hIXCIKznjkQ3A3X3k1n2IzGzRes"; // ganti
+    const supabase = createClient(supabaseUrl, supabaseKey);
 
-    function buka(page) {
-      window.location.href = page;
-    }
-
-    function logout() {
-      localStorage.removeItem("isLoggedIn");
+    // cek session login
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
       window.location.href = "login.html";
     }
+
+    // tombol logout
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      await supabase.auth.signOut();
+      window.location.href = "login.html";
+    });
   </script>
 </body>
 </html>
