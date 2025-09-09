@@ -3,162 +3,164 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Jadwal | Oshibase48</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <title>Kelola Jadwal | Admin Panel</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://kit.fontawesome.com/yourkitid.js" crossorigin="anonymous"></script>
   <style>
-    :root {
-      --midnight-indigo: #242D4C;
-      --vanilla-cream: #F1EAD8;
-    }
-
     body {
       margin: 0;
       font-family: 'Poppins', sans-serif;
-      background: var(--midnight-indigo);
-      color: var(--vanilla-cream);
+      background: #0f1c3f;
+      color: #fff;
       display: flex;
     }
-
-    /* Sidebar */
     .sidebar {
       width: 220px;
-      background: #1a2036;
+      background: #0c1432;
       height: 100vh;
-      position: fixed;
-      top: 0;
-      left: 0;
-      padding: 20px;
+      padding: 20px 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
-
     .sidebar h2 {
       text-align: center;
       margin-bottom: 30px;
-      color: var(--vanilla-cream);
+      color: #fff;
     }
-
     .sidebar a {
-      display: block;
-      color: var(--vanilla-cream);
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      margin: 5px 0;
+      color: #ccc;
       text-decoration: none;
-      margin: 15px 0;
-      font-size: 14px;
+      border-radius: 6px;
       transition: 0.3s;
     }
-
     .sidebar a:hover {
-      color: #FFD700;
+      background: #1e2a5a;
+      color: #fff;
     }
-
-    /* Main content */
+    .sidebar i {
+      margin-right: 10px;
+    }
+    .logout {
+      margin-top: auto;
+      background: #e74c3c;
+      color: #fff;
+      text-align: center;
+      padding: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
     .main {
-      margin-left: 240px;
-      padding: 20px;
       flex: 1;
+      padding: 20px;
     }
-
     h1 {
-      font-size: 22px;
+      margin-bottom: 10px;
+    }
+    .form-container {
+      background: #1e2a5a;
+      padding: 20px;
+      border-radius: 10px;
       margin-bottom: 20px;
     }
-
-    .form-box {
-      background: #2e3652;
+    .form-container input, .form-container textarea, .form-container button {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 6px;
+    }
+    .form-container input, .form-container textarea {
+      background: #0c1432;
+      color: #fff;
+    }
+    .form-container button {
+      background: #2ecc71;
+      color: #fff;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .form-container button:hover {
+      background: #27ae60;
+    }
+    .jadwal-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 15px;
+    }
+    .jadwal-item {
+      background: #1e2a5a;
       padding: 15px;
       border-radius: 10px;
-      margin-bottom: 20px;
     }
-
-    input, button {
-      padding: 8px;
-      margin: 5px;
+    .jadwal-item h3 {
+      margin: 0 0 5px 0;
+    }
+    .jadwal-item p {
+      margin: 5px 0;
+      font-size: 14px;
+      color: #ccc;
+    }
+    .jadwal-item button {
+      margin-right: 5px;
+      padding: 6px 10px;
       border: none;
-      border-radius: 5px;
-    }
-
-    input {
-      width: 180px;
-    }
-
-    button {
-      background: #FFD700;
+      border-radius: 6px;
       cursor: pointer;
-      font-weight: bold;
     }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: #2e3652;
-      border-radius: 10px;
-      overflow: hidden;
+    .edit-btn {
+      background: #3498db;
+      color: #fff;
     }
-
-    th, td {
-      padding: 10px;
-      border-bottom: 1px solid #444;
-      text-align: left;
-    }
-
-    th {
-      background: #1a2036;
-    }
-
-    .action-btn {
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      margin: 0 5px;
-      color: var(--vanilla-cream);
-    }
-
-    .action-btn:hover {
-      color: #FFD700;
+    .delete-btn {
+      background: #e74c3c;
+      color: #fff;
     }
   </style>
 </head>
 <body>
   <!-- Sidebar -->
   <div class="sidebar">
-    <h2>Oshibase48</h2>
-    <a href="dashboard.html"><i class="fa fa-home"></i> Dashboard</a>
-    <a href="jadwal.html"><i class="fa fa-calendar"></i> Jadwal</a>
-    <a href="berita.html"><i class="fa fa-newspaper"></i> Berita</a>
-    <a href="shop.html"><i class="fa fa-store"></i> Shop</a>
+    <div>
+      <h2>Admin Panel</h2>
+      <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+      <a href="berita.html"><i class="fas fa-newspaper"></i> Kelola Berita</a>
+      <a href="jadwal.html" style="background:#1e2a5a;color:#fff;"><i class="fas fa-calendar"></i> Kelola Jadwal</a>
+      <a href="shop.html"><i class="fas fa-store"></i> Kelola Shop</a>
+      <a href="user.html"><i class="fas fa-users"></i> Kelola User</a>
+    </div>
+    <div class="logout" onclick="logout()">Logout</div>
   </div>
 
-  <!-- Main content -->
+  <!-- Main Content -->
   <div class="main">
-    <h1>Manajemen Jadwal Event</h1>
+    <h1>Kelola Jadwal Event</h1>
+    <p>Tambah, edit, atau hapus jadwal event dengan mudah.</p>
 
     <!-- Form tambah -->
-    <div class="form-box">
-      <input type="text" id="tanggal" placeholder="Tanggal (dd-mm-yyyy)">
-      <input type="text" id="waktu" placeholder="Waktu (HH:MM)">
-      <input type="text" id="nama" placeholder="Nama Event">
-      <button onclick="addEvent()">Tambah</button>
+    <div class="form-container">
+      <form id="jadwalForm">
+        <input type="text" id="nama_event" placeholder="Nama Event" required>
+        <input type="datetime-local" id="tanggal" required>
+        <input type="text" id="lokasi" placeholder="Lokasi" required>
+        <textarea id="deskripsi" placeholder="Deskripsi Event"></textarea>
+        <button type="submit">Tambah Jadwal</button>
+      </form>
     </div>
 
-    <!-- Tabel jadwal -->
-    <table>
-      <thead>
-        <tr>
-          <th>Tanggal</th>
-          <th>Waktu</th>
-          <th>Event</th>
-          <th>Aksi</th>
-        </tr>
-      </thead>
-      <tbody id="eventTable"></tbody>
-    </table>
+    <!-- List jadwal -->
+    <div class="jadwal-list" id="jadwalList"></div>
   </div>
 
   <!-- Firebase -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getFirestore, collection, getDocs, addDoc, deleteDoc, updateDoc, doc }
-      from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 
-    // ⚡ Ganti ini dengan config Firebase kamu
     const firebaseConfig = {
       apiKey: "AIzaSyCOE7WS4EtPjZHluOOwsAdcPTTtuOokUoo",
       authDomain: "oshibase48ofc-e801c.firebaseapp.com",
@@ -171,71 +173,91 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    const colRef = collection(db, "jadwal");
 
-    // Render data
-    async function loadEvents() {
-      const table = document.getElementById("eventTable");
-      table.innerHTML = "";
-      const snapshot = await getDocs(colRef);
-      snapshot.forEach(docSnap => {
+    const jadwalForm = document.getElementById("jadwalForm");
+    const jadwalList = document.getElementById("jadwalList");
+
+    // Tambah Jadwal
+    jadwalForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      await addDoc(collection(db, "Jadwal"), {
+        nama_event: document.getElementById("nama_event").value,
+        tanggal: document.getElementById("tanggal").value,
+        lokasi: document.getElementById("lokasi").value,
+        deskripsi: document.getElementById("deskripsi").value
+      });
+      alert("Jadwal berhasil ditambahkan!");
+      jadwalForm.reset();
+      loadJadwal();
+    });
+
+    // Load Jadwal
+    async function loadJadwal() {
+      jadwalList.innerHTML = "";
+      const querySnapshot = await getDocs(collection(db, "Jadwal"));
+      querySnapshot.forEach((docSnap) => {
         const data = docSnap.data();
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${data.tanggal}</td>
-          <td>${data.waktu}</td>
-          <td>${data.nama}</td>
-          <td>
-            <button class="action-btn" onclick="editEvent('${docSnap.id}','${data.tanggal}','${data.waktu}','${data.nama}')">
-              <i class="fa fa-edit"></i>
-            </button>
-            <button class="action-btn" onclick="deleteEvent('${docSnap.id}')">
-              <i class="fa fa-trash"></i>
-            </button>
-          </td>
+        const div = document.createElement("div");
+        div.classList.add("jadwal-item");
+        div.innerHTML = `
+          <h3>${data.nama_event}</h3>
+          <p><strong>Tanggal:</strong> ${data.tanggal}</p>
+          <p><strong>Lokasi:</strong> ${data.lokasi}</p>
+          <p>${data.deskripsi || ""}</p>
+          <button class="edit-btn" onclick="editJadwal('${docSnap.id}','${data.nama_event}','${data.tanggal}','${data.lokasi}','${data.deskripsi || ""}')">Edit</button>
+          <button class="delete-btn" onclick="deleteJadwal('${docSnap.id}')">Hapus</button>
         `;
-        table.appendChild(tr);
+        jadwalList.appendChild(div);
       });
     }
 
-    // Tambah event
-    window.addEvent = async function() {
-      const tanggal = document.getElementById("tanggal").value;
-      const waktu = document.getElementById("waktu").value;
-      const nama = document.getElementById("nama").value;
-
-      if (!tanggal || !waktu || !nama) return alert("Lengkapi semua field!");
-
-      await addDoc(colRef, { tanggal, waktu, nama });
-      loadEvents();
-    }
-
-    // Hapus event
-    window.deleteEvent = async function(id) {
-      if (confirm("Yakin ingin menghapus?")) {
-        await deleteDoc(doc(db, "jadwal", id));
-        loadEvents();
+    // Hapus
+    window.deleteJadwal = async (id) => {
+      if(confirm("Yakin ingin menghapus event ini?")) {
+        await deleteDoc(doc(db, "Jadwal", id));
+        loadJadwal();
       }
     }
 
-    // Edit event
-    window.editEvent = async function(id, tanggal, waktu, nama) {
-      const newTanggal = prompt("Edit tanggal:", tanggal);
-      const newWaktu = prompt("Edit waktu:", waktu);
-      const newNama = prompt("Edit nama event:", nama);
-
-      if (newTanggal && newWaktu && newNama) {
-        await updateDoc(doc(db, "jadwal", id), {
-          tanggal: newTanggal,
-          waktu: newWaktu,
-          nama: newNama
+    // Edit
+    window.editJadwal = async (id, nama, tanggal, lokasi, deskripsi) => {
+      document.getElementById("nama_event").value = nama;
+      document.getElementById("tanggal").value = tanggal;
+      document.getElementById("lokasi").value = lokasi;
+      document.getElementById("deskripsi").value = deskripsi;
+      jadwalForm.onsubmit = async (e) => {
+        e.preventDefault();
+        const ref = doc(db, "Jadwal", id);
+        await updateDoc(ref, {
+          nama_event: document.getElementById("nama_event").value,
+          tanggal: document.getElementById("tanggal").value,
+          lokasi: document.getElementById("lokasi").value,
+          deskripsi: document.getElementById("deskripsi").value
         });
-        loadEvents();
+        alert("Jadwal berhasil diupdate!");
+        jadwalForm.reset();
+        jadwalForm.onsubmit = tambahJadwal;
+        loadJadwal();
       }
     }
+
+    // Reset fungsi tambah
+    const tambahJadwal = async (e) => {
+      e.preventDefault();
+      await addDoc(collection(db, "Jadwal"), {
+        nama_event: document.getElementById("nama_event").value,
+        tanggal: document.getElementById("tanggal").value,
+        lokasi: document.getElementById("lokasi").value,
+        deskripsi: document.getElementById("deskripsi").value
+      });
+      alert("Jadwal berhasil ditambahkan!");
+      jadwalForm.reset();
+      loadJadwal();
+    }
+    jadwalForm.onsubmit = tambahJadwal;
 
     // Load awal
-    loadEvents();
+    loadJadwal();
   </script>
 </body>
 </html>
