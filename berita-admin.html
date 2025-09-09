@@ -3,129 +3,98 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Admin - Berita</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <title>Kelola Berita - Admin Panel</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body {
       margin: 0;
       font-family: 'Poppins', sans-serif;
-      background: #f4f6fb;
+      background-color: #1b2340;
+      color: #fff;
       display: flex;
     }
-    /* Sidebar */
     .sidebar {
-      width: 240px;
-      background: #242D4C;
-      color: #F1EAD8;
-      display: flex;
-      flex-direction: column;
-      padding: 20px 0;
-      position: fixed;
-      height: 100%;
-    }
-    .sidebar .logo {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    .sidebar .logo img {
-      width: 60px;
-      border-radius: 50%;
+      width: 220px;
+      background: #141a32;
+      min-height: 100vh;
+      padding: 20px;
     }
     .sidebar h2 {
       font-size: 18px;
-      margin: 10px 0 20px;
+      margin-bottom: 20px;
     }
     .sidebar a {
-      padding: 12px 20px;
-      color: #F1EAD8;
-      text-decoration: none;
       display: flex;
       align-items: center;
+      padding: 10px;
+      margin: 8px 0;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 8px;
       transition: 0.3s;
     }
     .sidebar a:hover {
-      background: rgba(255, 255, 255, 0.1);
+      background: #2a3459;
     }
     .sidebar i {
       margin-right: 10px;
     }
-    /* Main */
     .main {
-      margin-left: 240px;
-      padding: 30px;
       flex: 1;
+      padding: 20px;
     }
     h1 {
       margin-bottom: 20px;
-      color: #242D4C;
-    }
-    .card {
-      background: #fff;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      animation: fadeIn 0.5s ease;
-    }
-    @keyframes fadeIn {
-      from {opacity: 0; transform: translateY(10px);}
-      to {opacity: 1; transform: translateY(0);}
-    }
-    .form-group {
-      margin-bottom: 15px;
-    }
-    .form-group label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: bold;
-    }
-    .form-group input, .form-group textarea {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-    }
-    button {
-      background: #242D4C;
-      color: #F1EAD8;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    button:hover {
-      background: #3a4570;
-    }
-    .preview {
-      margin-top: 10px;
-    }
-    .preview img {
-      max-width: 200px;
-      border-radius: 8px;
     }
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 15px;
+      margin-top: 20px;
+      background: #2a3459;
+      border-radius: 8px;
+      overflow: hidden;
     }
-    table th, table td {
-      border: 1px solid #ddd;
-      padding: 10px;
-      text-align: left;
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #444c6a;
     }
-    table th {
-      background: #242D4C;
-      color: #fff;
+    th {
+      background: #202846;
     }
-    .thumb {
-      width: 80px;
-      height: 60px;
-      object-fit: cover;
+    img {
       border-radius: 6px;
     }
-    .actions button {
-      margin-right: 5px;
+    .btn {
+      padding: 6px 10px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      color: #fff;
+    }
+    .btn-edit { background: #3498db; }
+    .btn-delete { background: #e74c3c; }
+    .form {
+      margin-top: 20px;
+      background: #2a3459;
+      padding: 15px;
+      border-radius: 8px;
+    }
+    .form input, .form textarea {
+      width: 100%;
+      margin: 8px 0;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+    }
+    .form button {
+      margin-top: 10px;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 6px;
+      background: #27ae60;
+      color: #fff;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -133,154 +102,125 @@
 
   <!-- Sidebar -->
   <div class="sidebar">
-    <div class="logo">
-      <img src="assets/logo.png" alt="Logo">
-      <h2>Admin Panel</h2>
-    </div>
+    <h2>📰 Admin Panel</h2>
     <a href="dashboard.html"><i class="fa fa-home"></i> Dashboard</a>
-    <a href="jadwal.html"><i class="fa fa-calendar"></i> Jadwal</a>
-    <a href="berita.html"><i class="fa fa-newspaper"></i> Berita</a>
-    <a href="galeri.html"><i class="fa fa-images"></i> Galeri</a>
-    <a href="#" id="logout"><i class="fa fa-sign-out-alt"></i> Logout</a>
+    <a href="berita.html" style="background:#2a3459"><i class="fa fa-newspaper"></i> Kelola Berita</a>
+    <a href="jadwal.html"><i class="fa fa-calendar"></i> Kelola Jadwal</a>
+    <a href="shop.html"><i class="fa fa-store"></i> Kelola Shop</a>
+    <a href="users.html"><i class="fa fa-users"></i> Kelola User</a>
   </div>
 
   <!-- Main -->
   <div class="main">
-    <h1>Manajemen Berita</h1>
+    <h1>Kelola Berita</h1>
 
-    <!-- Form Tambah -->
-    <div class="card">
-      <h3>Tambah Berita</h3>
-      <form id="beritaForm">
-        <div class="form-group">
-          <label>Judul</label>
-          <input type="text" id="judul" required>
-        </div>
-        <div class="form-group">
-          <label>Isi</label>
-          <textarea id="isi" rows="4" required></textarea>
-        </div>
-        <div class="form-group">
-          <label>Upload Gambar</label>
-          <input type="file" id="gambarFile" accept="image/*">
-          <div class="preview" id="preview"></div>
-        </div>
-        <button type="submit">Simpan</button>
-      </form>
+    <!-- Form Tambah Berita -->
+    <div class="form">
+      <h3>Tambah / Edit Berita</h3>
+      <input type="text" id="judul" placeholder="Judul Berita">
+      <textarea id="isi" rows="4" placeholder="Isi berita..."></textarea>
+      <input type="text" id="gambar" placeholder="URL Gambar">
+      <input type="date" id="tanggal">
+      <button onclick="simpanBerita()">Simpan</button>
     </div>
 
-    <!-- List Berita -->
-    <div class="card">
-      <h3>Daftar Berita</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Gambar</th>
-            <th>Judul</th>
-            <th>Tanggal</th>
-            <th>Aksi</th>
-          </tr>
-        </thead>
-        <tbody id="beritaList"></tbody>
-      </table>
-    </div>
+    <!-- Tabel Berita -->
+    <table>
+      <thead>
+        <tr>
+          <th>Judul</th>
+          <th>Isi</th>
+          <th>Gambar</th>
+          <th>Tanggal</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody id="beritaTable"></tbody>
+    </table>
   </div>
 
   <!-- Firebase -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-storage.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    // Config Firebase kamu
     const firebaseConfig = {
       apiKey: "AIzaSyCOE7WS4EtPjZHluOOwsAdcPTTtuOokUoo",
       authDomain: "oshibase48ofc-e801c.firebaseapp.com",
       projectId: "oshibase48ofc-e801c",
       storageBucket: "oshibase48ofc-e801c.firebasestorage.app",
       messagingSenderId: "116325605670",
-      appId: "1:116325605670:web:b8d14f682126207b6be1e7"
+      appId: "1:116325605670:web:b8d14f682126207b6be1e7",
       measurementId: "G-QTLFCQ7MPJ"
     };
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    const storage = getStorage(app);
 
-    const beritaForm = document.getElementById("beritaForm");
-    const beritaList = document.getElementById("beritaList");
-    const gambarFile = document.getElementById("gambarFile");
-    const preview = document.getElementById("preview");
+    const beritaTable = document.getElementById("beritaTable");
+    let editId = null;
 
-    let file = null;
-
-    gambarFile.addEventListener("change", e => {
-      file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = e => {
-          preview.innerHTML = `<img src="${e.target.result}" alt="preview">`;
-        };
-        reader.readAsDataURL(file);
-      }
-    });
-
-    // Tambah Berita
-    beritaForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const judul = document.getElementById("judul").value;
-      const isi = document.getElementById("isi").value;
-      let imageUrl = "";
-
-      if (file) {
-        const storageRef = ref(storage, 'berita/' + Date.now() + '-' + file.name);
-        await uploadBytes(storageRef, file);
-        imageUrl = await getDownloadURL(storageRef);
-      }
-
-      await addDoc(collection(db, "berita"), {
-        judul,
-        isi,
-        gambar: imageUrl,
-        tanggal: serverTimestamp()
-      });
-
-      alert("Berita berhasil ditambahkan!");
-      beritaForm.reset();
-      preview.innerHTML = "";
-      file = null;
-      loadBerita();
-    });
-
-    // Load Berita
     async function loadBerita() {
-      beritaList.innerHTML = "";
-      const querySnapshot = await getDocs(collection(db, "berita"));
-      querySnapshot.forEach((docu) => {
-        const data = docu.data();
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td><img src="${data.gambar}" class="thumb"></td>
-          <td>${data.judul}</td>
-          <td>${data.tanggal?.toDate ? data.tanggal.toDate().toLocaleString() : ""}</td>
-          <td class="actions">
-            <button onclick="hapusBerita('${docu.id}')">Hapus</button>
-          </td>
+      beritaTable.innerHTML = "";
+      const q = await getDocs(collection(db, "Berita"));
+      q.forEach((docSnap) => {
+        const data = docSnap.data();
+        const row = `
+          <tr>
+            <td>${data.judul}</td>
+            <td>${data.isi.substring(0, 50)}...</td>
+            <td><img src="${data.gambar}" width="80"></td>
+            <td>${data.tanggal}</td>
+            <td>
+              <button class="btn btn-edit" onclick="editBerita('${docSnap.id}', '${data.judul}', '${data.isi}', '${data.gambar}', '${data.tanggal}')">✏️</button>
+              <button class="btn btn-delete" onclick="hapusBerita('${docSnap.id}')">🗑️</button>
+            </td>
+          </tr>
         `;
-        beritaList.appendChild(tr);
+        beritaTable.innerHTML += row;
       });
     }
 
-    // Hapus Berita
-    window.hapusBerita = async (id) => {
-      if (confirm("Yakin ingin menghapus berita ini?")) {
-        await deleteDoc(doc(db, "Berita", id));
-        loadBerita();
+    window.simpanBerita = async function () {
+      const judul = document.getElementById("judul").value;
+      const isi = document.getElementById("isi").value;
+      const gambar = document.getElementById("gambar").value;
+      const tanggal = document.getElementById("tanggal").value;
+
+      if (!judul || !isi || !gambar || !tanggal) {
+        alert("Lengkapi semua field!");
+        return;
       }
-    };
+
+      if (editId) {
+        const ref = doc(db, "Berita", editId);
+        await updateDoc(ref, { judul, isi, gambar, tanggal });
+        editId = null;
+      } else {
+        await addDoc(collection(db, "Berita"), { judul, isi, gambar, tanggal });
+      }
+
+      document.getElementById("judul").value = "";
+      document.getElementById("isi").value = "";
+      document.getElementById("gambar").value = "";
+      document.getElementById("tanggal").value = "";
+      loadBerita();
+    }
+
+    window.hapusBerita = async function (id) {
+      await deleteDoc(doc(db, "Berita", id));
+      loadBerita();
+    }
+
+    window.editBerita = function (id, judul, isi, gambar, tanggal) {
+      document.getElementById("judul").value = judul;
+      document.getElementById("isi").value = isi;
+      document.getElementById("gambar").value = gambar;
+      document.getElementById("tanggal").value = tanggal;
+      editId = id;
+    }
 
     loadBerita();
   </script>
-
 </body>
 </html>
